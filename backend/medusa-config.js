@@ -76,6 +76,9 @@ const medusaConfig = {
     //   }
     // },
     {
+      resolve: "./src/modules/custom-rug",
+    },
+    {
       resolve: "@medusajs/medusa/file",
       options: {
         providers: [
