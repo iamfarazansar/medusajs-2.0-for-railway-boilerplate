@@ -28,8 +28,8 @@ export default function CustomRugBanner({
   secondaryCtaHref = "/process",
   chips = ["Free mockup", "Worldwide shipping", "Handcrafted"],
   // ✅ set these to your actual paths
-  originalImageSrc = "/custom/original.jpg",
-  rugImageSrc = "/custom/rug.jpg",
+  originalImageSrc = "/custom/original.JPG",
+  rugImageSrc = "/custom/rug.JPG",
 }: CustomRugBannerProps) {
   return (
     <section className="w-full">
