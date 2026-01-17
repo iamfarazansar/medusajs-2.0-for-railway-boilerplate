@@ -35,7 +35,7 @@ export default async function Nav() {
     <NavShell>
       <div className="content-container h-full flex items-center justify-between relative">
         {/* LEFT: Logo */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 shrink-0">
           <Link href="/">
             <img
               src="/logo.svg"
