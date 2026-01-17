@@ -26,7 +26,7 @@ const Thumbnail: React.FC<ThumbnailProps> = ({
     <Container
       className={clx(
         // ✅ “new” style: image-first, no padding, clipped corners
-        "relative w-full overflow-hidden rounded-md bg-ui-bg-subtle shadow-elevation-card-rest transition-shadow ease-in-out duration-150 group-hover:shadow-elevation-card-hover",
+        "relative w-full overflow-hidden bg-ui-bg-subtle",
         className,
         {
           // ✅ use the newer ratio

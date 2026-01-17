@@ -7,7 +7,7 @@ import {
   ListboxOptions,
   Transition,
 } from "@headlessui/react"
-import { Fragment, useEffect, useMemo, useState, useId } from "react"
+import { Fragment, useMemo } from "react"
 import ReactCountryFlag from "react-country-flag"
 import { clx } from "@medusajs/ui"
 import { ArrowRightMini } from "@medusajs/icons"
@@ -29,10 +29,6 @@ type CountrySelectProps = {
 }
 
 const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
-  const uid = useId() // ✅ stable across SSR + client
-
-  const [current, setCurrent] = useState<CountryOption | null>(null)
-
   const { countryCode } = useParams()
   const currentPath = usePathname().split(`/${countryCode}`)[1]
 
@@ -53,23 +49,22 @@ const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
     )
   }, [regions])
 
-  useEffect(() => {
-    if (!countryCode || !options.length) return
-    const selected = options.find((o) => o.country === countryCode)
-    if (selected) setCurrent(selected)
+  // ✅ stable selection (like old code) – no useEffect, no state
+  const selected = useMemo(() => {
+    if (!countryCode || !options.length) return null
+    return options.find((o) => o.country === countryCode) ?? null
   }, [options, countryCode])
 
   const handleChange = (option: CountryOption) => {
-    setCurrent(option)
     updateRegion(option.country, currentPath)
     close()
   }
 
   return (
     <div className="relative inline-flex">
-      <Listbox value={current} onChange={handleChange} as="div">
+      {/* ✅ Uncontrolled listbox (same stable behavior as old) */}
+      <Listbox defaultValue={selected} onChange={handleChange} as="div">
         <ListboxButton
-          id={`country-select-btn-${uid}`} // ✅ FIX hydration mismatch
           onClick={(e) => {
             e.preventDefault()
             e.stopPropagation()
@@ -90,17 +85,17 @@ const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
             <ReactCountryFlag
               svg
               style={{ width: 16, height: 16 }}
-              countryCode={current?.country ?? ""}
+              countryCode={selected?.country ?? ""}
             />
 
             {/* ✅ Mobile = show country code only */}
             <span className="md:hidden">
-              {(current?.country ?? "").toUpperCase()}
+              {(selected?.country ?? "").toUpperCase()}
             </span>
 
             {/* ✅ Desktop = show full label */}
             <span className="hidden md:inline max-w-[140px] truncate">
-              {current?.label}
+              {selected?.label}
             </span>
           </span>
 
@@ -120,7 +115,6 @@ const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
           leaveTo="opacity-0"
         >
           <ListboxOptions
-            id={`country-select-options-${uid}`} // ✅ also stable
             className="
               absolute
               top-full
@@ -130,6 +124,7 @@ const CountrySelect = ({ toggleState, regions }: CountrySelectProps) => {
               w-fit
               min-w-[170px]
               max-w-[220px]
+              max-h-[420px]
               overflow-y-scroll
               z-[900]
               bg-white
