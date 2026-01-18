@@ -11,11 +11,13 @@ type InjectedDependencies = {
 interface ResendServiceConfig {
   apiKey: string
   from: string
+  replyTo?: string
 }
 
 export interface ResendNotificationServiceOptions {
   api_key: string
   from: string
+  reply_to?: string
 }
 
 type NotificationEmailOptions = Omit<
@@ -36,7 +38,8 @@ export class ResendNotificationService extends AbstractNotificationProviderServi
     super()
     this.config_ = {
       apiKey: options.api_key,
-      from: options.from
+      from: options.from,
+      replyTo: options.reply_to
     }
     this.logger_ = logger
     this.resend = new Resend(this.config_.apiKey)
@@ -76,7 +79,7 @@ export class ResendNotificationService extends AbstractNotificationProviderServi
       react: emailContent,
       subject: emailOptions.subject ?? 'You have a new notification',
       headers: emailOptions.headers,
-      replyTo: emailOptions.replyTo,
+      replyTo: emailOptions.replyTo ?? this.config_.replyTo,
       cc: emailOptions.cc,
       bcc: emailOptions.bcc,
       tags: emailOptions.tags,
