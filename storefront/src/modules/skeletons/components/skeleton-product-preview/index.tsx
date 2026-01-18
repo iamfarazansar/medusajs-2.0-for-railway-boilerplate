@@ -13,16 +13,9 @@ const SkeletonProductPreview = () => {
           {/* ✅ Title */}
           <div className="h-4 w-4/5 rounded bg-ui-bg-subtle" />
 
-          {/* ✅ Price + days pill row */}
+          {/* ✅ Price pill row */}
           <div className="mt-2 flex items-center justify-between gap-2">
             <div className="h-4 w-1/3 rounded bg-ui-bg-subtle" />
-            <div className="h-6 w-16 rounded-full bg-ui-bg-subtle" />
-          </div>
-
-          {/* ✅ Chips */}
-          <div className="mt-3 flex gap-2">
-            <div className="h-6 w-16 rounded-full bg-ui-bg-subtle" />
-            <div className="h-6 w-24 rounded-full bg-ui-bg-subtle" />
           </div>
         </div>
       </div>
