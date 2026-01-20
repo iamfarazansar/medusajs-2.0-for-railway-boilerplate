@@ -390,12 +390,35 @@ export async function validateGoogleCallback(
         console.log("[Google Auth] Customer created successfully")
 
         // CRITICAL: Immediate Server-Side Refresh (from GitHub issue #14251)
-        // We manually pass the initialToken in headers because cookies aren't fully set yet.
+        // We use a direct fetch to the backend's refresh endpoint
         // This exchanges the Identity Token for a full Customer Token immediately.
         console.log("[Google Auth] Refreshing token server-side...")
-        const refreshedToken = await sdk.auth.refresh({
-          Authorization: `Bearer ${token}`,
-        })
+        const backendUrl =
+          process.env.MEDUSA_BACKEND_URL || "http://localhost:9000"
+        const refreshResponse = await fetch(
+          `${backendUrl}/auth/token/refresh`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+
+        console.log(
+          "[Google Auth] Refresh response status:",
+          refreshResponse.status
+        )
+
+        if (!refreshResponse.ok) {
+          const errorText = await refreshResponse.text()
+          console.log("[Google Auth] Refresh error:", errorText)
+          throw new Error(`Refresh failed: ${refreshResponse.status}`)
+        }
+
+        const refreshData = await refreshResponse.json()
+        const refreshedToken = refreshData.token
 
         if (refreshedToken && typeof refreshedToken === "string") {
           await setAuthToken(refreshedToken)
@@ -414,11 +437,23 @@ export async function validateGoogleCallback(
         )
         // If customer already exists, still try to refresh the token
         try {
-          const refreshedToken = await sdk.auth.refresh({
-            Authorization: `Bearer ${token}`,
-          })
-          if (refreshedToken && typeof refreshedToken === "string") {
-            await setAuthToken(refreshedToken)
+          const backendUrl =
+            process.env.MEDUSA_BACKEND_URL || "http://localhost:9000"
+          const refreshResponse = await fetch(
+            `${backendUrl}/auth/token/refresh`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
+          if (refreshResponse.ok) {
+            const refreshData = await refreshResponse.json()
+            if (refreshData.token && typeof refreshData.token === "string") {
+              await setAuthToken(refreshData.token)
+            }
           }
         } catch (refreshError) {
           console.log("[Google Auth] Token refresh failed:", refreshError)
