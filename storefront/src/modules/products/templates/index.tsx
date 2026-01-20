@@ -59,54 +59,57 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
                     <ProductActionsWrapper id={product.id} region={region} />
                   </Suspense>
 
-                  {/* Trust rows under CTA (like screenshot) */}
+                  {/* Trust rows under CTA */}
                   <div className="mt-5 rounded-xl border border-ui-border-base bg-ui-bg-subtle p-4">
-                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                      <div className="flex flex-col items-center justify-center gap-2">
+                    <div className="flex flex-wrap justify-between gap-y-4">
+                      <div className="flex flex-col items-center justify-center gap-1.5 w-1/2 lg:w-auto lg:flex-1">
                         <Image
                           src="/product/Shipsin.svg"
                           alt="Shipping"
-                          width={80}
-                          height={80}
+                          width={40}
+                          height={40}
                         />
-                        <p className="text-sm text-ui-fg-base text-center">
-                          Ships in 7–10 days
+                        <p className="text-xs text-ui-fg-base text-center leading-tight">
+                          Ships in
+                          <br className="lg:hidden" /> 7–10 days
                         </p>
                       </div>
 
-                      <div className="flex flex-col items-center justify-center gap-2">
+                      <div className="flex flex-col items-center justify-center gap-1.5 w-1/2 lg:w-auto lg:flex-1">
                         <Image
                           src="/product/handmade.svg"
                           alt="Handmade"
-                          width={80}
-                          height={80}
+                          width={40}
+                          height={40}
                         />
-                        <p className="text-sm text-ui-fg-base text-center">
-                          Handmade by artisans
+                        <p className="text-xs text-ui-fg-base text-center leading-tight">
+                          Handmade
                         </p>
                       </div>
 
-                      <div className="flex flex-col items-center justify-center gap-2">
+                      <div className="flex flex-col items-center justify-center gap-1.5 w-1/2 lg:w-auto lg:flex-1">
                         <Image
                           src="/product/Premium.svg"
                           alt="Premium"
-                          width={80}
-                          height={80}
+                          width={40}
+                          height={40}
                         />
-                        <p className="text-sm text-ui-fg-base text-center">
-                          Premium quality
+                        <p className="text-xs text-ui-fg-base text-center leading-tight">
+                          Premium
+                          <br className="lg:hidden" /> quality
                         </p>
                       </div>
 
-                      <div className="flex flex-col items-center justify-center gap-2">
+                      <div className="flex flex-col items-center justify-center gap-1.5 w-1/2 lg:w-auto lg:flex-1">
                         <Image
                           src="/product/Crafted.svg"
                           alt="Secure"
-                          width={80}
-                          height={80}
+                          width={40}
+                          height={40}
                         />
-                        <p className="text-sm text-ui-fg-base text-center">
-                          Crafted with You
+                        <p className="text-xs text-ui-fg-base text-center leading-tight">
+                          Crafted
+                          <br className="lg:hidden" /> with You
                         </p>
                       </div>
                     </div>
@@ -166,10 +169,16 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
 
               <div className="p-6 text-sm space-y-6">
                 <div className="flex items-start gap-3">
-                  <span className="text-lg">⚡</span>
+                  <Image
+                    src="/product/truck.svg"
+                    alt="Shipping"
+                    width={32}
+                    height={32}
+                    className="flex-shrink-0 mt-0.5"
+                  />
                   <div>
                     <p className="font-semibold text-ui-fg-base">
-                      Fast delivery
+                      Ships in 7–10 days
                     </p>
                     <p className="mt-1 text-ui-fg-subtle">
                       Your rug is handmade and ships in 7–10 days. Worldwide
@@ -179,25 +188,37 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <span className="text-lg">🔁</span>
+                  <Image
+                    src="/product/update.svg"
+                    alt="Updates"
+                    width={32}
+                    height={32}
+                    className="flex-shrink-0 mt-0.5"
+                  />
                   <div>
                     <p className="font-semibold text-ui-fg-base">
-                      Simple updates
+                      Manufacturing updates
                     </p>
                     <p className="mt-1 text-ui-fg-subtle">
-                      We’ll keep you updated with tracking once dispatched.
+                      We’ll keep you updated throughout the rug-making process.
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <span className="text-lg">↩️</span>
+                  <Image
+                    src="/product/help.svg"
+                    alt="Support"
+                    width={32}
+                    height={32}
+                    className="flex-shrink-0 mt-0.5"
+                  />
                   <div>
                     <p className="font-semibold text-ui-fg-base">
-                      Returns & support
+                      Support & help
                     </p>
                     <p className="mt-1 text-ui-fg-subtle">
-                      Need help? Contact us and we’ll sort it out quickly.
+                      Need assistance? Contact us and we’ll sort it out quickly.
                     </p>
                   </div>
                 </div>
