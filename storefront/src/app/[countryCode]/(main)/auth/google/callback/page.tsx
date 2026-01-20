@@ -1,12 +1,13 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useSearchParams, useParams } from "next/navigation"
+import { useSearchParams, useParams, useRouter } from "next/navigation"
 import { validateGoogleCallback } from "@lib/data/customer"
 
 export default function GoogleCallbackPage() {
   const searchParams = useSearchParams()
   const params = useParams()
+  const router = useRouter()
   const countryCode = params.countryCode as string
 
   const [error, setError] = useState<string | null>(null)
@@ -29,8 +30,11 @@ export default function GoogleCallbackPage() {
         console.log("Callback result:", result)
 
         if (result.success) {
-          // Single-step flow complete - go directly to account page
-          window.location.href = `/${countryCode}/account`
+          // Refresh to sync server-side cookies, then navigate
+          router.refresh()
+          // Small delay to ensure cookies are fully synced
+          await new Promise((resolve) => setTimeout(resolve, 500))
+          router.push(`/${countryCode}/account`)
         } else {
           setError(result.error || "Authentication failed")
           setLoading(false)
@@ -43,7 +47,7 @@ export default function GoogleCallbackPage() {
     }
 
     handleCallback()
-  }, [searchParams, countryCode])
+  }, [searchParams, countryCode, router])
 
   if (loading) {
     return (
