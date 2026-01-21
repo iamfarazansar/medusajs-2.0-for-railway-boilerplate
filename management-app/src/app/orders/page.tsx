@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useAuth } from "@/lib/auth-context";
+import Link from "next/link";
 
 interface OrderItem {
   id: string;
@@ -343,7 +344,8 @@ export default function OrdersPage() {
                           ? "..."
                           : "+ Work Orders"}
                       </button>
-                      <button
+                      <Link
+                        href={`/orders/${order.id}`}
                         className="p-2 hover:bg-gray-700 rounded-lg transition"
                         title="View Details"
                       >
@@ -366,7 +368,7 @@ export default function OrdersPage() {
                             d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
                           />
                         </svg>
-                      </button>
+                      </Link>
                     </div>
                   </td>
                 </tr>
