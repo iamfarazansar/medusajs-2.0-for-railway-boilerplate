@@ -142,10 +142,11 @@ export default function OrdersPage() {
   };
 
   const formatCurrency = (amount: number, currency: string) => {
+    // Medusa returns amounts in the main currency unit (not cents)
     return new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: currency?.toUpperCase() || "USD",
-    }).format(amount / 100);
+    }).format(amount);
   };
 
   const formatDate = (dateString: string) => {
