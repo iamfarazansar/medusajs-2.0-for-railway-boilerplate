@@ -12,7 +12,9 @@ interface OrderItem {
 interface Order {
   id: string;
   display_id: number;
+  email: string; // Order email (can be different from customer email)
   customer: {
+    id: string;
     email: string;
     first_name?: string;
     last_name?: string;
@@ -66,8 +68,23 @@ export default function OrdersPage() {
     setError(null);
 
     try {
+      // Include customer fields in the request
+      const fields = [
+        "id",
+        "display_id",
+        "email",
+        "total",
+        "currency_code",
+        "status",
+        "payment_status",
+        "fulfillment_status",
+        "created_at",
+        "*customer",
+        "*items",
+      ].join(",");
+
       const response = await fetch(
-        `${BACKEND_URL}/admin/orders?limit=50&order=-created_at`,
+        `${BACKEND_URL}/admin/orders?limit=50&order=-created_at&fields=${encodeURIComponent(fields)}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -78,6 +95,7 @@ export default function OrdersPage() {
 
       if (response.ok) {
         const data = await response.json();
+        console.log("Orders data:", data.orders); // Debug log
         setOrders(data.orders || []);
       } else {
         throw new Error("Failed to fetch orders");
@@ -141,6 +159,7 @@ export default function OrdersPage() {
   const filteredOrders = orders.filter((order) => {
     const matchesSearch =
       order.display_id?.toString().includes(searchQuery) ||
+      order.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       order.customer?.email
         ?.toLowerCase()
         .includes(searchQuery.toLowerCase()) ||
@@ -278,11 +297,12 @@ export default function OrdersPage() {
                   <td className="px-6 py-4">
                     <div>
                       <p className="text-sm text-white">
-                        {order.customer?.first_name || ""}{" "}
-                        {order.customer?.last_name || "Guest"}
+                        {order.customer?.first_name || order.customer?.last_name
+                          ? `${order.customer?.first_name || ""} ${order.customer?.last_name || ""}`.trim()
+                          : "Guest"}
                       </p>
                       <p className="text-xs text-gray-500">
-                        {order.customer?.email || "N/A"}
+                        {order.email || order.customer?.email || "N/A"}
                       </p>
                     </div>
                   </td>
