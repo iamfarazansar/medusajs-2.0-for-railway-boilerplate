@@ -71,25 +71,27 @@ export async function POST(
       return;
     }
 
-    // Complete the current stage
+    // Try to complete the current stage if it exists
     const currentStageRecords = await manufacturingService.listWorkOrderStages({
       work_order_id: id,
       stage: workOrder.current_stage,
       status: "active",
     });
 
-    if (currentStageRecords.length > 0) {
-      await manufacturingService.updateWorkOrderStages(
-        currentStageRecords[0].id,
-        {
-          status: "completed",
-          completed_at: new Date(),
-        },
-      );
+    if (currentStageRecords.length > 0 && currentStageRecords[0].id) {
+      const stageId = currentStageRecords[0].id;
+      console.log("Updating stage with ID:", stageId);
+
+      // MedusaService update expects data object with ID included
+      await manufacturingService.updateWorkOrderStages({
+        id: stageId,
+        status: "completed",
+        completed_at: new Date(),
+      });
     }
 
-    // Create new stage record
-    await manufacturingService.createWorkOrderStages({
+    // Create new stage record for the next stage
+    const newStage = await manufacturingService.createWorkOrderStages({
       work_order_id: id,
       stage: nextStage,
       status: "active",
@@ -98,9 +100,12 @@ export async function POST(
       notes,
     });
 
-    // Update work order - use ID directly and the data object
+    console.log("Created new stage:", newStage);
+
+    // Update work order current stage - data object with ID included
     const isCompleted = nextStage === "ready_to_ship";
-    await manufacturingService.updateWorkOrders(id, {
+    await manufacturingService.updateWorkOrders({
+      id: id,
       current_stage: nextStage,
       status: isCompleted ? "completed" : "in_progress",
       ...(isCompleted && { completed_at: new Date() }),

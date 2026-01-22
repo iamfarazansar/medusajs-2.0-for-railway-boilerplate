@@ -54,12 +54,19 @@ export default function WorkOrdersPage() {
       if (response.ok) {
         const data = await response.json();
         setWorkOrders(data.work_orders || []);
+      } else if (response.status === 404) {
+        // No work orders yet, that's fine
+        setWorkOrders([]);
       } else {
-        throw new Error("Failed to fetch work orders");
+        const errorData = await response.json().catch(() => ({}));
+        console.error("API Error:", response.status, errorData);
+        throw new Error(errorData.message || `API Error: ${response.status}`);
       }
     } catch (err) {
       console.error("Error fetching work orders:", err);
-      setError("Failed to load work orders");
+      setError(
+        err instanceof Error ? err.message : "Failed to load work orders",
+      );
     } finally {
       setLoading(false);
     }
