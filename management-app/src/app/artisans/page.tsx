@@ -100,7 +100,13 @@ export default function ArtisansPage() {
     return matchesSearch && matchesRole;
   });
 
-  const uniqueRoles = [...new Set(artisans.map((a) => a.role).filter(Boolean))];
+  const uniqueRoles = [
+    ...new Set(
+      artisans
+        .map((a) => a.role)
+        .filter((r): r is string => r !== null && r !== undefined),
+    ),
+  ];
 
   if (loading) {
     return (
