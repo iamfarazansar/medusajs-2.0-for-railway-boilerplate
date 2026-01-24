@@ -48,7 +48,9 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
           <h1 className="text-xl font-bold bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
             RuggyLand
           </h1>
-          <p className="text-xs text-gray-500 dark:text-gray-500">Manufacturing Hub</p>
+          <p className="text-xs text-gray-500 dark:text-gray-500">
+            Manufacturing Hub
+          </p>
         </div>
 
         <nav className="space-y-1 flex-1">
@@ -97,6 +99,29 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
               />
             </svg>
             Orders
+          </Link>
+          <Link
+            href="/products"
+            className={`flex items-center gap-3 px-3 py-2 rounded-lg transition ${
+              isActive("/products")
+                ? "bg-amber-50 dark:bg-gray-800 text-amber-700 dark:text-amber-400"
+                : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800/50 hover:text-gray-900 dark:hover:text-white"
+            }`}
+          >
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+              />
+            </svg>
+            Products
           </Link>
           <Link
             href="/work-orders"
@@ -174,8 +199,12 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
           <div className="flex items-center justify-between mb-3">
             {user && (
               <div className="min-w-0 flex-1">
-                <p className="text-sm text-gray-900 dark:text-white truncate">{user.email}</p>
-                <p className="text-xs text-gray-500 dark:text-gray-500">Admin</p>
+                <p className="text-sm text-gray-900 dark:text-white truncate">
+                  {user.email}
+                </p>
+                <p className="text-xs text-gray-500 dark:text-gray-500">
+                  Admin
+                </p>
               </div>
             )}
             <ThemeToggle />

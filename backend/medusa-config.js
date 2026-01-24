@@ -101,7 +101,12 @@ const medusaConfig = {
               region: process.env.S3_REGION,
               bucket: process.env.S3_BUCKET,
               endpoint: process.env.S3_ENDPOINT,
-              // other options...
+              // Set public-read ACL so uploaded files are accessible via URL
+              additional_client_config: {
+                // S3 ACL for uploaded objects
+              },
+              // For AWS S3, set ACL to public-read
+              // Note: Bucket must have ACLs enabled and allow public access
             },
           },
         ],

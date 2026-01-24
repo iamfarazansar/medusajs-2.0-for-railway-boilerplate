@@ -153,6 +153,68 @@ class ApiClient {
   async getOrder(id: string) {
     return this.request(`/admin/orders/${id}`);
   }
+
+  // File Upload
+  async uploadFile(file: File): Promise<{ file: { id: string; url: string } }> {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const headers: Record<string, string> = {};
+    if (this.token) {
+      headers["Authorization"] = `Bearer ${this.token}`;
+    }
+
+    const response = await fetch(`${this.baseUrl}/admin/uploads`, {
+      method: "POST",
+      headers,
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const error = await response
+        .json()
+        .catch(() => ({ error: "Upload failed" }));
+      throw new Error(error.error || `HTTP ${response.status}`);
+    }
+
+    return response.json();
+  }
+
+  // Products
+  async getProductFormData() {
+    return this.request<{
+      shipping_profiles: { id: string; name: string; type: string }[];
+      categories: { id: string; name: string }[];
+      collections: { id: string; title: string }[];
+    }>("/admin/custom-products");
+  }
+
+  async createProduct(data: {
+    title: string;
+    description?: string;
+    handle?: string;
+    status?: "draft" | "published";
+    images?: { url: string }[];
+    options?: { title: string; values: string[] }[];
+    variants?: {
+      title: string;
+      sku?: string;
+      options?: Record<string, string>;
+      prices: { amount: number; currency_code: string }[];
+      manage_inventory?: boolean;
+    }[];
+    weight?: number;
+    collection_id?: string;
+    category_ids?: string[];
+  }) {
+    return this.request<{ product: unknown; message: string }>(
+      "/admin/custom-products",
+      {
+        method: "POST",
+        body: data,
+      },
+    );
+  }
 }
 
 export const api = new ApiClient(BACKEND_URL);

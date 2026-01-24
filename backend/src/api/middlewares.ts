@@ -109,5 +109,13 @@ export default defineMiddlewares({
         uploadMw, // ✅ multer with limits + filters + clean errors
       ],
     },
+    {
+      // Large file uploads via base64 JSON
+      matcher: "/admin/product-uploads",
+      method: "POST",
+      bodyParser: {
+        sizeLimit: 50 * 1024 * 1024, // 50MB limit
+      },
+    },
   ],
 });

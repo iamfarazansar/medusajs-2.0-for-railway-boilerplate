@@ -119,3 +119,47 @@ export const STATUS_COLORS: Record<WorkOrderStatus, string> = {
   completed: "bg-green-500",
   cancelled: "bg-red-500",
 };
+
+// Product types for product creation
+export interface ProductImage {
+  id?: string;
+  url: string;
+  file?: File;
+}
+
+export interface ProductOption {
+  title: string;
+  values: string[];
+}
+
+export interface ProductVariantPrice {
+  amount: number;
+  currency_code: string;
+}
+
+export interface ProductVariant {
+  title: string;
+  sku?: string;
+  options?: Record<string, string>;
+  prices: ProductVariantPrice[];
+  manage_inventory?: boolean;
+}
+
+export interface CreateProductInput {
+  title: string;
+  description?: string;
+  handle?: string;
+  status?: "draft" | "published";
+  images?: { url: string }[];
+  options?: ProductOption[];
+  variants?: ProductVariant[];
+  weight?: number;
+  collection_id?: string;
+  category_ids?: string[];
+}
+
+export interface ProductFormData {
+  shipping_profiles: { id: string; name: string; type: string }[];
+  categories: { id: string; name: string }[];
+  collections: { id: string; title: string }[];
+}
