@@ -105,7 +105,7 @@ export default function KanbanPage() {
       <div className="p-8 flex items-center justify-center min-h-[400px]">
         <div className="flex flex-col items-center gap-4">
           <div className="w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-gray-400">Loading production board...</p>
+          <p className="text-gray-600 dark:text-gray-400">Loading production board...</p>
         </div>
       </div>
     );
@@ -116,7 +116,7 @@ export default function KanbanPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-3xl font-bold text-white">Production Board</h1>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Production Board</h1>
           <p className="text-gray-400 mt-1">
             Visual workflow for all work orders
           </p>
@@ -124,11 +124,11 @@ export default function KanbanPage() {
         <div className="flex items-center gap-4">
           <button
             onClick={fetchWorkOrders}
-            className="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition"
+            className="px-4 py-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-white rounded-lg transition"
           >
             ↻ Refresh
           </button>
-          <div className="flex items-center gap-2 text-sm text-gray-400">
+          <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
             <span className="w-3 h-3 rounded-full bg-gray-500"></span> Low
             <span className="w-3 h-3 rounded-full bg-blue-500 ml-2"></span>{" "}
             Normal
@@ -147,7 +147,7 @@ export default function KanbanPage() {
       )}
 
       {workOrders.length === 0 ? (
-        <div className="flex-1 flex items-center justify-center bg-gray-900/50 rounded-xl border border-gray-800">
+        <div className="flex-1 flex items-center justify-center bg-gray-100 dark:bg-gray-900/50 rounded-xl border border-gray-200 dark:border-gray-800">
           <div className="text-center">
             <p className="text-gray-400 text-lg mb-2">No work orders yet</p>
             <p className="text-gray-500 text-sm mb-6">
@@ -169,10 +169,10 @@ export default function KanbanPage() {
               return (
                 <div
                   key={stage}
-                  className="w-72 flex-shrink-0 bg-gray-900/50 rounded-xl border border-gray-800 flex flex-col"
+                  className="w-72 flex-shrink-0 bg-gray-100 dark:bg-gray-900/50 rounded-xl border border-gray-800 flex flex-col"
                 >
                   {/* Column Header */}
-                  <div className="p-4 border-b border-gray-800">
+                  <div className="p-4 border-b border-gray-200 dark:border-gray-800">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <span

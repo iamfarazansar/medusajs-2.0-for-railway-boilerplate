@@ -118,7 +118,7 @@ export default function WorkOrdersPage() {
       <div className="p-8 flex items-center justify-center min-h-[400px]">
         <div className="flex flex-col items-center gap-4">
           <div className="w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-gray-400">Loading work orders...</p>
+          <p className="text-gray-600 dark:text-gray-400">Loading work orders...</p>
         </div>
       </div>
     );
@@ -129,7 +129,7 @@ export default function WorkOrdersPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-white">Work Orders</h1>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Work Orders</h1>
           <p className="text-gray-400 mt-1">Manage production work orders</p>
         </div>
         <a
@@ -160,7 +160,7 @@ export default function WorkOrdersPage() {
       )}
 
       {/* Filters */}
-      <div className="bg-gray-900 rounded-xl border border-gray-800 p-4 mb-6">
+      <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4 mb-6">
         <div className="flex flex-wrap gap-4">
           {/* Search */}
           <div className="flex-1 min-w-[200px]">
@@ -169,7 +169,7 @@ export default function WorkOrdersPage() {
               placeholder="Search work orders..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+              className="w-full px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
             />
           </div>
 
@@ -182,7 +182,7 @@ export default function WorkOrdersPage() {
                 stage: e.target.value as ManufacturingStage | "all",
               })
             }
-            className="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+            className="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
           >
             <option value="all">All Stages</option>
             {Object.entries(STAGE_LABELS).map(([key, label]) => (
@@ -201,7 +201,7 @@ export default function WorkOrdersPage() {
                 status: e.target.value as WorkOrderStatus | "all",
               })
             }
-            className="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+            className="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
           >
             <option value="all">All Status</option>
             <option value="pending">Pending</option>
@@ -220,7 +220,7 @@ export default function WorkOrdersPage() {
                 priority: e.target.value as Priority | "all",
               })
             }
-            className="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+            className="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
           >
             <option value="all">All Priority</option>
             <option value="urgent">Urgent</option>
@@ -232,7 +232,7 @@ export default function WorkOrdersPage() {
           {/* Refresh */}
           <button
             onClick={fetchWorkOrders}
-            className="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition"
+            className="px-4 py-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-white rounded-lg transition"
           >
             ↻ Refresh
           </button>
@@ -246,7 +246,7 @@ export default function WorkOrdersPage() {
 
       {/* Work Orders Table */}
       {workOrders.length === 0 ? (
-        <div className="bg-gray-900 rounded-xl border border-gray-800 p-12 text-center">
+        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-12 text-center">
           <p className="text-gray-400 text-lg mb-2">No work orders yet</p>
           <p className="text-gray-500 text-sm mb-6">
             Create work orders from the Orders page
@@ -259,9 +259,9 @@ export default function WorkOrdersPage() {
           </a>
         </div>
       ) : (
-        <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
+        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden">
           <table className="w-full">
-            <thead className="bg-gray-800/50">
+            <thead className="bg-gray-100 dark:bg-gray-800/50">
               <tr>
                 <th className="text-left px-6 py-4 text-xs font-medium text-gray-400 uppercase tracking-wider">
                   Work Order
@@ -287,11 +287,11 @@ export default function WorkOrdersPage() {
               {filteredOrders.map((wo) => (
                 <tr
                   key={wo.id}
-                  className="hover:bg-gray-800/50 transition cursor-pointer"
+                  className="hover:bg-gray-100 dark:bg-gray-800/50 transition cursor-pointer"
                 >
                   <td className="px-6 py-4">
                     <div>
-                      <p className="text-sm font-medium text-white">
+                      <p className="text-sm font-medium text-gray-900 dark:text-white">
                         {wo.title}
                       </p>
                       <p className="text-xs text-gray-500">
@@ -335,7 +335,7 @@ export default function WorkOrdersPage() {
                         title="View Details"
                       >
                         <svg
-                          className="w-4 h-4 text-gray-400"
+                          className="w-4 h-4 text-gray-600 dark:text-gray-400"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"

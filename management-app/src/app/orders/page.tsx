@@ -33,7 +33,7 @@ const BACKEND_URL =
   process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL || "http://localhost:9000";
 
 const FULFILLMENT_COLORS: Record<string, string> = {
-  not_fulfilled: "bg-gray-500/20 text-gray-400",
+  not_fulfilled: "bg-gray-500/20 text-gray-600 dark:text-gray-400",
   partially_fulfilled: "bg-blue-500/20 text-blue-400",
   fulfilled: "bg-green-500/20 text-green-400",
   shipped: "bg-purple-500/20 text-purple-400",
@@ -44,7 +44,7 @@ const PAYMENT_COLORS: Record<string, string> = {
   captured: "bg-green-500/20 text-green-400",
   refunded: "bg-red-500/20 text-red-400",
   partially_refunded: "bg-orange-500/20 text-orange-400",
-  not_paid: "bg-gray-500/20 text-gray-400",
+  not_paid: "bg-gray-500/20 text-gray-600 dark:text-gray-400",
 };
 
 export default function OrdersPage() {
@@ -183,7 +183,7 @@ export default function OrdersPage() {
       <div className="p-8 flex items-center justify-center min-h-[400px]">
         <div className="flex flex-col items-center gap-4">
           <div className="w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-gray-400">Loading orders...</p>
+          <p className="text-gray-600 dark:text-gray-400">Loading orders...</p>
         </div>
       </div>
     );
@@ -194,7 +194,7 @@ export default function OrdersPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-white">Orders</h1>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Orders</h1>
           <p className="text-gray-400 mt-1">
             Manage customer orders and create work orders
           </p>
@@ -214,7 +214,7 @@ export default function OrdersPage() {
       )}
 
       {/* Filters */}
-      <div className="bg-gray-900 rounded-xl border border-gray-800 p-4 mb-6">
+      <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4 mb-6">
         <div className="flex flex-wrap gap-4">
           {/* Search */}
           <div className="flex-1 min-w-[200px]">
@@ -223,7 +223,7 @@ export default function OrdersPage() {
               placeholder="Search by order ID, customer email..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+              className="w-full px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
             />
           </div>
 
@@ -231,7 +231,7 @@ export default function OrdersPage() {
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+            className="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
           >
             <option value="all">All Fulfillment</option>
             <option value="not_fulfilled">Not Fulfilled</option>
@@ -249,16 +249,16 @@ export default function OrdersPage() {
 
       {/* Orders Table */}
       {orders.length === 0 ? (
-        <div className="bg-gray-900 rounded-xl border border-gray-800 p-12 text-center">
+        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-12 text-center">
           <p className="text-gray-400 text-lg mb-2">No orders yet</p>
           <p className="text-gray-500 text-sm">
             Orders will appear here when customers place them
           </p>
         </div>
       ) : (
-        <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
+        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden">
           <table className="w-full">
-            <thead className="bg-gray-800/50">
+            <thead className="bg-gray-100 dark:bg-gray-800/50">
               <tr>
                 <th className="text-left px-6 py-4 text-xs font-medium text-gray-400 uppercase tracking-wider">
                   Order
@@ -285,10 +285,10 @@ export default function OrdersPage() {
             </thead>
             <tbody className="divide-y divide-gray-800">
               {filteredOrders.map((order) => (
-                <tr key={order.id} className="hover:bg-gray-800/50 transition">
+                <tr key={order.id} className="hover:bg-gray-100 dark:bg-gray-800/50 transition">
                   <td className="px-6 py-4">
                     <div>
-                      <p className="text-sm font-medium text-white">
+                      <p className="text-sm font-medium text-gray-900 dark:text-white">
                         #{order.display_id}
                       </p>
                       <p className="text-xs text-gray-500">
@@ -298,7 +298,7 @@ export default function OrdersPage() {
                   </td>
                   <td className="px-6 py-4">
                     <div>
-                      <p className="text-sm text-white">
+                      <p className="text-sm text-gray-900 dark:text-white">
                         {order.customer?.first_name || order.customer?.last_name
                           ? `${order.customer?.first_name || ""} ${order.customer?.last_name || ""}`.trim()
                           : "Guest"}
@@ -309,20 +309,20 @@ export default function OrdersPage() {
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <p className="text-sm font-medium text-white">
+                    <p className="text-sm font-medium text-gray-900 dark:text-white">
                       {formatCurrency(order.total || 0, order.currency_code)}
                     </p>
                   </td>
                   <td className="px-6 py-4">
                     <span
-                      className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${PAYMENT_COLORS[order.payment_status] || "bg-gray-500/20 text-gray-400"}`}
+                      className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${PAYMENT_COLORS[order.payment_status] || "bg-gray-500/20 text-gray-600 dark:text-gray-400"}`}
                     >
                       {order.payment_status?.replace("_", " ") || "N/A"}
                     </span>
                   </td>
                   <td className="px-6 py-4">
                     <span
-                      className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${FULFILLMENT_COLORS[order.fulfillment_status] || "bg-gray-500/20 text-gray-400"}`}
+                      className={`inline-flex px-2 py-1 rounded-full text-xs font-medium ${FULFILLMENT_COLORS[order.fulfillment_status] || "bg-gray-500/20 text-gray-600 dark:text-gray-400"}`}
                     >
                       {order.fulfillment_status?.replace(/_/g, " ") || "N/A"}
                     </span>
@@ -350,7 +350,7 @@ export default function OrdersPage() {
                         title="View Details"
                       >
                         <svg
-                          className="w-4 h-4 text-gray-400"
+                          className="w-4 h-4 text-gray-600 dark:text-gray-400"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"

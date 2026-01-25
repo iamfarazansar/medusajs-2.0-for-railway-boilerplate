@@ -4,7 +4,7 @@ import { ProductStatus, Modules } from "@medusajs/framework/utils";
 
 /**
  * Product creation endpoint following official Medusa AdminCreateProduct type
- * 
+ *
  * Options format: { title: string, values: string[] }[]
  * Variants format: { title, sku?, prices[], options?: Record<string, string> }[]
  *   - options maps option title to selected value, e.g. { "Size": "Small", "Color": "Blue" }
@@ -22,7 +22,11 @@ interface CreateProductInput {
     title: string;
     sku?: string;
     options?: Record<string, string>;
-    prices: { amount: number; currency_code: string }[];
+    prices: {
+      amount: number;
+      currency_code: string;
+      rules?: { region_id: string };
+    }[];
     manage_inventory?: boolean;
   }[];
   weight?: number;
@@ -43,8 +47,16 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     const productData: any = {
       title: input.title,
       description: input.description || "",
-      handle: input.handle || input.title.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, ""),
-      status: input.status === "published" ? ProductStatus.PUBLISHED : ProductStatus.DRAFT,
+      handle:
+        input.handle ||
+        input.title
+          .toLowerCase()
+          .replace(/\s+/g, "-")
+          .replace(/[^a-z0-9-]/g, ""),
+      status:
+        input.status === "published"
+          ? ProductStatus.PUBLISHED
+          : ProductStatus.DRAFT,
       images: input.images || [],
     };
 
@@ -67,7 +79,9 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
         .filter((o) => o.title && o.values && o.values.length > 0)
         .map((o) => ({
           title: o.title.trim(),
-          values: o.values.filter((v) => v && v.trim().length > 0).map((v) => v.trim()),
+          values: o.values
+            .filter((v) => v && v.trim().length > 0)
+            .map((v) => v.trim()),
         }))
         .filter((o) => o.values.length > 0);
     } else {
@@ -104,7 +118,10 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
       ];
     }
 
-    console.log("Creating product with data:", JSON.stringify(productData, null, 2));
+    console.log(
+      "Creating product with data:",
+      JSON.stringify(productData, null, 2),
+    );
 
     // Run the createProductsWorkflow
     const { result } = await createProductsWorkflow(req.scope).run({
@@ -119,8 +136,8 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
     });
   } catch (error: any) {
     console.error("Product creation error:", error);
-    return res.status(500).json({ 
-      error: error.message || "Failed to create product" 
+    return res.status(500).json({
+      error: error.message || "Failed to create product",
     });
   }
 }
@@ -130,14 +147,14 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
   try {
     // Get product categories using Modules constant
     const productModule = req.scope.resolve(Modules.PRODUCT) as any;
-    
+
     let categories: any[] = [];
     let collections: any[] = [];
-    
+
     try {
       const [cats] = await productModule.listAndCountProductCategories(
         {},
-        { take: 100, order: { name: "ASC" } }
+        { take: 100, order: { name: "ASC" } },
       );
       categories = cats || [];
     } catch (e) {
@@ -147,7 +164,7 @@ export async function GET(req: MedusaRequest, res: MedusaResponse) {
     try {
       const [colls] = await productModule.listAndCountProductCollections(
         {},
-        { take: 100, order: { title: "ASC" } }
+        { take: 100, order: { title: "ASC" } },
       );
       collections = colls || [];
     } catch (e) {

@@ -79,7 +79,7 @@ interface WorkOrder {
 }
 
 const FULFILLMENT_COLORS: Record<string, string> = {
-  not_fulfilled: "bg-gray-500/20 text-gray-400",
+  not_fulfilled: "bg-gray-500/20 text-gray-600 dark:text-gray-400",
   partially_fulfilled: "bg-blue-500/20 text-blue-400",
   fulfilled: "bg-green-500/20 text-green-400",
   shipped: "bg-purple-500/20 text-purple-400",
@@ -90,7 +90,7 @@ const PAYMENT_COLORS: Record<string, string> = {
   captured: "bg-green-500/20 text-green-400",
   refunded: "bg-red-500/20 text-red-400",
   partially_refunded: "bg-orange-500/20 text-orange-400",
-  not_paid: "bg-gray-500/20 text-gray-400",
+  not_paid: "bg-gray-500/20 text-gray-600 dark:text-gray-400",
 };
 
 export default function OrderDetailPage() {
@@ -213,7 +213,7 @@ export default function OrderDetailPage() {
       <div className="p-8 flex items-center justify-center min-h-[400px]">
         <div className="flex flex-col items-center gap-4">
           <div className="w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-gray-400">Loading order details...</p>
+          <p className="text-gray-600 dark:text-gray-400">Loading order details...</p>
         </div>
       </div>
     );
@@ -241,24 +241,24 @@ export default function OrderDetailPage() {
       <div className="flex items-start justify-between mb-8">
         <div>
           <div className="flex items-center gap-4 mb-2">
-            <Link href="/orders" className="text-gray-400 hover:text-white">
+            <Link href="/orders" className="text-gray-400 hover:text-gray-900 dark:text-white">
               ← Back
             </Link>
             <span className="text-gray-600">|</span>
-            <h1 className="text-3xl font-bold text-white">
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
               Order #{order.display_id}
             </h1>
           </div>
-          <p className="text-gray-400">{formatDate(order.created_at)}</p>
+          <p className="text-gray-600 dark:text-gray-400">{formatDate(order.created_at)}</p>
         </div>
         <div className="flex items-center gap-3">
           <span
-            className={`px-3 py-1 rounded-full text-sm font-medium ${PAYMENT_COLORS[order.payment_status] || "bg-gray-500/20 text-gray-400"}`}
+            className={`px-3 py-1 rounded-full text-sm font-medium ${PAYMENT_COLORS[order.payment_status] || "bg-gray-500/20 text-gray-600 dark:text-gray-400"}`}
           >
             {order.payment_status?.replace("_", " ")}
           </span>
           <span
-            className={`px-3 py-1 rounded-full text-sm font-medium ${FULFILLMENT_COLORS[order.fulfillment_status] || "bg-gray-500/20 text-gray-400"}`}
+            className={`px-3 py-1 rounded-full text-sm font-medium ${FULFILLMENT_COLORS[order.fulfillment_status] || "bg-gray-500/20 text-gray-600 dark:text-gray-400"}`}
           >
             {order.fulfillment_status?.replace(/_/g, " ")}
           </span>
@@ -269,13 +269,13 @@ export default function OrderDetailPage() {
         {/* Left Column - Order Items */}
         <div className="lg:col-span-2 space-y-6">
           {/* Items */}
-          <div className="bg-gray-900 rounded-xl border border-gray-800 p-6">
+          <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
             <h2 className="text-lg font-semibold text-white mb-4">Items</h2>
             <div className="space-y-4">
               {order.items.map((item) => (
                 <div
                   key={item.id}
-                  className="flex gap-4 p-4 bg-gray-800/50 rounded-lg"
+                  className="flex gap-4 p-4 bg-gray-100 dark:bg-gray-800/50 rounded-lg"
                 >
                   {item.thumbnail ? (
                     <img
@@ -296,7 +296,7 @@ export default function OrderDetailPage() {
                       {item.variant_title || item.subtitle}
                     </p>
                     <div className="mt-2 flex items-center justify-between">
-                      <span className="text-gray-400">
+                      <span className="text-gray-600 dark:text-gray-400">
                         Qty: {item.quantity}
                       </span>
                       <span className="text-white font-medium">
@@ -310,13 +310,13 @@ export default function OrderDetailPage() {
 
             {/* Totals */}
             <div className="mt-6 pt-6 border-t border-gray-800 space-y-2">
-              <div className="flex justify-between text-gray-400">
+              <div className="flex justify-between text-gray-600 dark:text-gray-400">
                 <span>Subtotal</span>
                 <span>
                   {formatCurrency(order.subtotal || 0, order.currency_code)}
                 </span>
               </div>
-              <div className="flex justify-between text-gray-400">
+              <div className="flex justify-between text-gray-600 dark:text-gray-400">
                 <span>Shipping</span>
                 <span>
                   {formatCurrency(
@@ -333,13 +333,13 @@ export default function OrderDetailPage() {
                   </span>
                 </div>
               )}
-              <div className="flex justify-between text-gray-400">
+              <div className="flex justify-between text-gray-600 dark:text-gray-400">
                 <span>Tax</span>
                 <span>
                   {formatCurrency(order.tax_total || 0, order.currency_code)}
                 </span>
               </div>
-              <div className="flex justify-between text-white text-lg font-bold pt-2 border-t border-gray-800">
+              <div className="flex justify-between text-white text-lg font-bold pt-2 border-t border-gray-200 dark:border-gray-800">
                 <span>Total</span>
                 <span>{formatCurrency(order.total, order.currency_code)}</span>
               </div>
@@ -347,9 +347,9 @@ export default function OrderDetailPage() {
           </div>
 
           {/* Work Orders */}
-          <div className="bg-gray-900 rounded-xl border border-gray-800 p-6">
+          <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-white">Work Orders</h2>
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Work Orders</h2>
               {workOrders.length === 0 && (
                 <button
                   onClick={createWorkOrders}
@@ -367,7 +367,7 @@ export default function OrderDetailPage() {
                   <Link
                     key={wo.id}
                     href={`/work-orders`}
-                    className="flex items-center justify-between p-4 bg-gray-800/50 rounded-lg hover:bg-gray-800 transition"
+                    className="flex items-center justify-between p-4 bg-gray-100 dark:bg-gray-800/50 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-800 transition"
                   >
                     <div>
                       <p className="text-white font-medium">{wo.title}</p>
@@ -381,7 +381,7 @@ export default function OrderDetailPage() {
                           ? "bg-red-500/20 text-red-400"
                           : wo.priority === "high"
                             ? "bg-orange-500/20 text-orange-400"
-                            : "bg-gray-500/20 text-gray-400"
+                            : "bg-gray-500/20 text-gray-600 dark:text-gray-400"
                       }`}
                     >
                       {wo.priority}
@@ -403,12 +403,12 @@ export default function OrderDetailPage() {
         {/* Right Column - Customer & Shipping */}
         <div className="space-y-6">
           {/* Customer */}
-          <div className="bg-gray-900 rounded-xl border border-gray-800 p-6">
+          <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
             <h2 className="text-lg font-semibold text-white mb-4">Customer</h2>
             <div className="space-y-3">
               <div>
                 <p className="text-sm text-gray-500">Name</p>
-                <p className="text-white">
+                <p className="text-gray-900 dark:text-white">
                   {order.customer?.first_name || order.customer?.last_name
                     ? `${order.customer?.first_name || ""} ${order.customer?.last_name || ""}`.trim()
                     : "Guest"}
@@ -416,14 +416,14 @@ export default function OrderDetailPage() {
               </div>
               <div>
                 <p className="text-sm text-gray-500">Email</p>
-                <p className="text-white">
+                <p className="text-gray-900 dark:text-white">
                   {order.email || order.customer?.email || "N/A"}
                 </p>
               </div>
               {order.customer?.phone && (
                 <div>
                   <p className="text-sm text-gray-500">Phone</p>
-                  <p className="text-white">{order.customer.phone}</p>
+                  <p className="text-gray-900 dark:text-white">{order.customer.phone}</p>
                 </div>
               )}
             </div>
@@ -431,7 +431,7 @@ export default function OrderDetailPage() {
 
           {/* Shipping Address */}
           {order.shipping_address && (
-            <div className="bg-gray-900 rounded-xl border border-gray-800 p-6">
+            <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
               <h2 className="text-lg font-semibold text-white mb-4">
                 Shipping Address
               </h2>
@@ -463,14 +463,14 @@ export default function OrderDetailPage() {
 
           {/* Shipping Method */}
           {order.shipping_methods?.length > 0 && (
-            <div className="bg-gray-900 rounded-xl border border-gray-800 p-6">
+            <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
               <h2 className="text-lg font-semibold text-white mb-4">
                 Shipping Method
               </h2>
               {order.shipping_methods.map((method) => (
                 <div key={method.id} className="flex justify-between">
                   <span className="text-gray-300">{method.name}</span>
-                  <span className="text-white">
+                  <span className="text-gray-900 dark:text-white">
                     {formatCurrency(method.amount, order.currency_code)}
                   </span>
                 </div>
@@ -480,7 +480,7 @@ export default function OrderDetailPage() {
 
           {/* Billing Address */}
           {order.billing_address && (
-            <div className="bg-gray-900 rounded-xl border border-gray-800 p-6">
+            <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
               <h2 className="text-lg font-semibold text-white mb-4">
                 Billing Address
               </h2>

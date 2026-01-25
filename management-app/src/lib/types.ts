@@ -135,6 +135,7 @@ export interface ProductOption {
 export interface ProductVariantPrice {
   amount: number;
   currency_code: string;
+  region_id?: string; // For region-based pricing
 }
 
 export interface ProductVariant {
@@ -142,6 +143,7 @@ export interface ProductVariant {
   sku?: string;
   options?: Record<string, string>;
   prices: ProductVariantPrice[];
+  region_prices?: Record<string, number>; // region_id -> amount
   manage_inventory?: boolean;
 }
 
@@ -162,4 +164,6 @@ export interface ProductFormData {
   shipping_profiles: { id: string; name: string; type: string }[];
   categories: { id: string; name: string }[];
   collections: { id: string; title: string }[];
+  product_types?: { id: string; value: string }[];
+  sales_channels?: { id: string; name: string }[];
 }

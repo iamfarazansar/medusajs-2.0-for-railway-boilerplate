@@ -113,7 +113,7 @@ export default function ArtisansPage() {
       <div className="p-8 flex items-center justify-center min-h-[400px]">
         <div className="flex flex-col items-center gap-4">
           <div className="w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-gray-400">Loading artisans...</p>
+          <p className="text-gray-600 dark:text-gray-400">Loading artisans...</p>
         </div>
       </div>
     );
@@ -124,7 +124,7 @@ export default function ArtisansPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-white">Artisans</h1>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Artisans</h1>
           <p className="text-gray-400 mt-1">Manage your manufacturing team</p>
         </div>
         <button
@@ -156,26 +156,26 @@ export default function ArtisansPage() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-        <div className="bg-gray-900 rounded-xl border border-gray-800 p-4">
-          <p className="text-sm text-gray-400">Total Artisans</p>
+        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4">
+          <p className="text-sm text-gray-600 dark:text-gray-400">Total Artisans</p>
           <p className="text-2xl font-bold text-white mt-1">
             {artisans.length}
           </p>
         </div>
-        <div className="bg-gray-900 rounded-xl border border-gray-800 p-4">
-          <p className="text-sm text-gray-400">Active</p>
+        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4">
+          <p className="text-sm text-gray-600 dark:text-gray-400">Active</p>
           <p className="text-2xl font-bold text-green-400 mt-1">
             {artisans.filter((a) => a.active).length}
           </p>
         </div>
-        <div className="bg-gray-900 rounded-xl border border-gray-800 p-4">
-          <p className="text-sm text-gray-400">Total Completed</p>
+        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4">
+          <p className="text-sm text-gray-600 dark:text-gray-400">Total Completed</p>
           <p className="text-2xl font-bold text-white mt-1">
             {artisans.reduce((sum, a) => sum + (a.completed_orders || 0), 0)}
           </p>
         </div>
-        <div className="bg-gray-900 rounded-xl border border-gray-800 p-4">
-          <p className="text-sm text-gray-400">Avg Rating</p>
+        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4">
+          <p className="text-sm text-gray-600 dark:text-gray-400">Avg Rating</p>
           <p className="text-2xl font-bold text-amber-400 mt-1">
             {artisans.length > 0
               ? (
@@ -191,7 +191,7 @@ export default function ArtisansPage() {
       </div>
 
       {/* Filters */}
-      <div className="bg-gray-900 rounded-xl border border-gray-800 p-4 mb-6">
+      <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4 mb-6">
         <div className="flex flex-wrap gap-4">
           {/* Search */}
           <div className="flex-1 min-w-[200px]">
@@ -200,7 +200,7 @@ export default function ArtisansPage() {
               placeholder="Search by name, email, or role..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+              className="w-full px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
             />
           </div>
 
@@ -209,7 +209,7 @@ export default function ArtisansPage() {
             <select
               value={roleFilter}
               onChange={(e) => setRoleFilter(e.target.value)}
-              className="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
+              className="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-amber-500"
             >
               <option value="all">All Roles</option>
               {uniqueRoles.map((role) => (
@@ -222,7 +222,7 @@ export default function ArtisansPage() {
 
           <button
             onClick={fetchArtisans}
-            className="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition"
+            className="px-4 py-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-white rounded-lg transition"
           >
             ↻ Refresh
           </button>
@@ -231,7 +231,7 @@ export default function ArtisansPage() {
 
       {/* Artisans Grid */}
       {artisans.length === 0 ? (
-        <div className="bg-gray-900 rounded-xl border border-gray-800 p-12 text-center">
+        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-12 text-center">
           <p className="text-gray-400 text-lg mb-2">No artisans yet</p>
           <p className="text-gray-500 text-sm mb-6">
             Add your first artisan to get started
@@ -248,13 +248,13 @@ export default function ArtisansPage() {
           {filteredArtisans.map((artisan) => (
             <div
               key={artisan.id}
-              className={`bg-gray-900 rounded-xl border ${artisan.active ? "border-gray-800" : "border-red-900/30"} p-6 hover:border-gray-700 transition`}
+              className={`bg-gray-900 rounded-xl border ${artisan.active ? "border-gray-200 dark:border-gray-800" : "border-red-900/30"} p-6 hover:border-gray-700 transition`}
             >
               {/* Header */}
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <div
-                    className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold ${artisan.active ? "bg-amber-500/20 text-amber-400" : "bg-gray-700 text-gray-400"}`}
+                    className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold ${artisan.active ? "bg-amber-500/20 text-amber-400" : "bg-gray-700 text-gray-600 dark:text-gray-400"}`}
                   >
                     {artisan.name
                       .split(" ")
@@ -279,7 +279,7 @@ export default function ArtisansPage() {
               {/* Contact */}
               <div className="space-y-2 mb-4">
                 {artisan.email && (
-                  <div className="flex items-center gap-2 text-sm text-gray-400">
+                  <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                     <svg
                       className="w-4 h-4"
                       fill="none"
@@ -297,7 +297,7 @@ export default function ArtisansPage() {
                   </div>
                 )}
                 {artisan.phone && (
-                  <div className="flex items-center gap-2 text-sm text-gray-400">
+                  <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                     <svg
                       className="w-4 h-4"
                       fill="none"
@@ -317,10 +317,10 @@ export default function ArtisansPage() {
               </div>
 
               {/* Stats */}
-              <div className="flex items-center justify-between pt-4 border-t border-gray-800">
+              <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-800">
                 <div>
                   <p className="text-xs text-gray-500">Completed</p>
-                  <p className="text-lg font-bold text-white">
+                  <p className="text-lg font-bold text-gray-900 dark:text-white">
                     {artisan.completed_orders || 0}
                   </p>
                 </div>
@@ -339,7 +339,7 @@ export default function ArtisansPage() {
       {/* Add Artisan Modal */}
       {showAddModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-gray-900 rounded-2xl border border-gray-800 p-6 w-full max-w-md">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-6 w-full max-w-md">
             <h2 className="text-xl font-bold text-white mb-6">
               Add New Artisan
             </h2>
@@ -355,7 +355,7 @@ export default function ArtisansPage() {
                   onChange={(e) =>
                     setNewArtisan({ ...newArtisan, name: e.target.value })
                   }
-                  className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="w-full px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500"
                   placeholder="Full name"
                 />
               </div>
@@ -369,7 +369,7 @@ export default function ArtisansPage() {
                   onChange={(e) =>
                     setNewArtisan({ ...newArtisan, email: e.target.value })
                   }
-                  className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="w-full px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500"
                   placeholder="email@example.com"
                 />
               </div>
@@ -383,7 +383,7 @@ export default function ArtisansPage() {
                   onChange={(e) =>
                     setNewArtisan({ ...newArtisan, phone: e.target.value })
                   }
-                  className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="w-full px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500"
                   placeholder="+1 234 567 8900"
                 />
               </div>
@@ -397,7 +397,7 @@ export default function ArtisansPage() {
                   onChange={(e) =>
                     setNewArtisan({ ...newArtisan, role: e.target.value })
                   }
-                  className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="w-full px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500"
                   placeholder="e.g., Master Weaver, QC Specialist"
                 />
               </div>
@@ -406,7 +406,7 @@ export default function ArtisansPage() {
             <div className="flex gap-3 mt-6">
               <button
                 onClick={() => setShowAddModal(false)}
-                className="flex-1 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition"
+                className="flex-1 py-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-white rounded-lg transition"
               >
                 Cancel
               </button>

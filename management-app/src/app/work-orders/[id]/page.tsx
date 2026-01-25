@@ -125,7 +125,7 @@ export default function WorkOrderDetailPage() {
       <div className="p-8 flex items-center justify-center min-h-[400px]">
         <div className="flex flex-col items-center gap-4">
           <div className="w-10 h-10 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-gray-400">Loading work order details...</p>
+          <p className="text-gray-600 dark:text-gray-400">Loading work order details...</p>
         </div>
       </div>
     );
@@ -160,14 +160,14 @@ export default function WorkOrderDetailPage() {
           <div className="flex items-center gap-4 mb-2">
             <Link
               href="/work-orders"
-              className="text-gray-400 hover:text-white"
+              className="text-gray-400 hover:text-gray-900 dark:text-white"
             >
               ← Back
             </Link>
             <span className="text-gray-600">|</span>
-            <h1 className="text-3xl font-bold text-white">{workOrder.title}</h1>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{workOrder.title}</h1>
           </div>
-          <p className="text-gray-400">
+          <p className="text-gray-600 dark:text-gray-400">
             {workOrder.sku && (
               <span className="mr-2">SKU: {workOrder.sku}</span>
             )}
@@ -189,7 +189,7 @@ export default function WorkOrderDetailPage() {
       </div>
 
       {/* Progress Timeline */}
-      <div className="bg-gray-900 rounded-xl border border-gray-800 p-6 mb-6">
+      <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6 mb-6">
         <h2 className="text-lg font-semibold text-white mb-6">
           Production Progress
         </h2>
@@ -220,7 +220,7 @@ export default function WorkOrderDetailPage() {
                   <div
                     className={`w-8 h-8 rounded-full flex items-center justify-center border-2 transition-all ${
                       isCompleted
-                        ? "bg-green-500 border-green-500 text-white"
+                        ? "bg-green-500 border-green-500 text-gray-900 dark:text-white"
                         : isCurrent
                           ? `${STAGE_COLORS[stage]} border-white`
                           : "bg-gray-800 border-gray-600 text-gray-500"
@@ -258,7 +258,7 @@ export default function WorkOrderDetailPage() {
         {/* Current Stage & Advance Button */}
         <div className="mt-8 flex items-center justify-between">
           <div>
-            <p className="text-sm text-gray-400">Current Stage</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400">Current Stage</p>
             <p
               className={`text-xl font-bold ${STAGE_COLORS[workOrder.current_stage].replace("bg-", "text-").replace("-500", "-400")}`}
             >
@@ -303,11 +303,11 @@ export default function WorkOrderDetailPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Details Card */}
-        <div className="bg-gray-900 rounded-xl border border-gray-800 p-6">
+        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
           <h2 className="text-lg font-semibold text-white mb-4">Details</h2>
           <div className="space-y-4">
             <div className="flex justify-between">
-              <span className="text-gray-400">Order ID</span>
+              <span className="text-gray-600 dark:text-gray-400">Order ID</span>
               <Link
                 href={`/orders/${workOrder.order_id}`}
                 className="text-amber-500 hover:text-amber-400"
@@ -316,28 +316,28 @@ export default function WorkOrderDetailPage() {
               </Link>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-400">Due Date</span>
-              <span className="text-white">
+              <span className="text-gray-600 dark:text-gray-400">Due Date</span>
+              <span className="text-gray-900 dark:text-white">
                 {workOrder.due_date
                   ? formatDate(workOrder.due_date)
                   : "Not set"}
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-400">Started</span>
-              <span className="text-white">
+              <span className="text-gray-600 dark:text-gray-400">Started</span>
+              <span className="text-gray-900 dark:text-white">
                 {formatDate(workOrder.started_at)}
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-400">Created</span>
-              <span className="text-white">
+              <span className="text-gray-600 dark:text-gray-400">Created</span>
+              <span className="text-gray-900 dark:text-white">
                 {formatDate(workOrder.created_at)}
               </span>
             </div>
             {workOrder.completed_at && (
               <div className="flex justify-between">
-                <span className="text-gray-400">Completed</span>
+                <span className="text-gray-600 dark:text-gray-400">Completed</span>
                 <span className="text-green-400">
                   {formatDate(workOrder.completed_at)}
                 </span>
@@ -347,7 +347,7 @@ export default function WorkOrderDetailPage() {
         </div>
 
         {/* Notes Card */}
-        <div className="bg-gray-900 rounded-xl border border-gray-800 p-6">
+        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
           <h2 className="text-lg font-semibold text-white mb-4">Notes</h2>
           {workOrder.notes ? (
             <p className="text-gray-300">{workOrder.notes}</p>
@@ -358,7 +358,7 @@ export default function WorkOrderDetailPage() {
 
         {/* Stage History */}
         {workOrder.stages && workOrder.stages.length > 0 && (
-          <div className="lg:col-span-2 bg-gray-900 rounded-xl border border-gray-800 p-6">
+          <div className="lg:col-span-2 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
             <h2 className="text-lg font-semibold text-white mb-4">
               Stage History
             </h2>
@@ -366,7 +366,7 @@ export default function WorkOrderDetailPage() {
               {workOrder.stages.map((stage) => (
                 <div
                   key={stage.id}
-                  className="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg"
+                  className="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800/50 rounded-lg"
                 >
                   <div className="flex items-center gap-3">
                     <div
@@ -378,7 +378,7 @@ export default function WorkOrderDetailPage() {
                             : "bg-gray-500"
                       }`}
                     ></div>
-                    <span className="text-white">
+                    <span className="text-gray-900 dark:text-white">
                       {STAGE_LABELS[stage.stage as ManufacturingStage] ||
                         stage.stage}
                     </span>
