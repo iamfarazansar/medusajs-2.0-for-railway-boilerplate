@@ -21,12 +21,20 @@ interface Order {
     last_name?: string;
   } | null;
   total: number;
+  subtotal?: number;
+  shipping_total?: number;
   currency_code: string;
   status: string;
   payment_status: string;
   fulfillment_status: string;
   created_at: string;
   items?: OrderItem[];
+  summary?: {
+    current_order_total: number;
+    original_order_total: number;
+    pending_difference: number;
+    transaction_total: number;
+  };
 }
 
 const BACKEND_URL =
@@ -69,12 +77,15 @@ export default function OrdersPage() {
     setError(null);
 
     try {
-      // Include customer fields in the request
+      // Include customer fields and summary in the request
+      // Medusa v2 uses summary object for order totals
       const fields = [
         "id",
         "display_id",
         "email",
         "total",
+        "subtotal",
+        "shipping_total",
         "currency_code",
         "status",
         "payment_status",
@@ -82,6 +93,7 @@ export default function OrdersPage() {
         "created_at",
         "*customer",
         "*items",
+        "*summary",
       ].join(",");
 
       const response = await fetch(
@@ -143,7 +155,6 @@ export default function OrdersPage() {
   };
 
   const formatCurrency = (amount: number, currency: string) => {
-    // Medusa returns amounts in the main currency unit (not cents)
     return new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: currency?.toUpperCase() || "USD",
@@ -315,7 +326,10 @@ export default function OrdersPage() {
                   </td>
                   <td className="px-6 py-4">
                     <p className="text-sm font-medium text-gray-900 dark:text-white">
-                      {formatCurrency(order.total || 0, order.currency_code)}
+                      {formatCurrency(
+                        order.summary?.current_order_total ?? order.total ?? 0,
+                        order.currency_code,
+                      )}
                     </p>
                   </td>
                   <td className="px-6 py-4">
