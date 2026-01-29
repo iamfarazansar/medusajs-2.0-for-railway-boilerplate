@@ -1,12 +1,7 @@
 import { Suspense } from "react"
 
-import { listRegions } from "@lib/data/regions"
-import { listLocales } from "@lib/data/locales"
-import { getLocale } from "@lib/data/locale-actions"
-import { StoreRegion } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import CartButton from "@modules/layout/components/cart-button"
-import CountrySelectNav from "@modules/layout/components/country-select-nav"
 import Link from "next/link"
 import NavShell from "../nav-shell"
 import { BsPerson } from "react-icons/bs"
@@ -15,12 +10,6 @@ import CategoriesDropdown from "@modules/layout/components/categories-dropdown"
 import NavMobile from "../nav-mobile"
 
 export default async function Nav() {
-  const [regions, locales, currentLocale] = await Promise.all([
-    listRegions().then((regions: StoreRegion[]) => regions),
-    listLocales(),
-    getLocale(),
-  ])
-
   const productCategories = await listCategories()
 
   // ✅ Match: Home | All Rugs | Categories ▾ | Custom Rug | Contact
@@ -83,10 +72,8 @@ export default async function Nav() {
           </LocalizedClientLink>
         </div>
 
-        {/* RIGHT: Country + Account + Cart + Mobile */}
+        {/* RIGHT: Account + Cart + Mobile */}
         <div className="flex items-center gap-2 md:gap-4">
-          <CountrySelectNav regions={regions} />
-
           <div className="small:flex items-center">
             <LocalizedClientLink
               className="w-8 md:w-12 h-8 md:h-12 rounded-full flex justify-center items-center hover:bg-black/[0.05] cursor-pointer transition"

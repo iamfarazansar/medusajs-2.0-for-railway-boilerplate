@@ -1,12 +1,15 @@
-"use client"
 import Link from "next/link"
-import { FaFacebookF, FaTwitter, FaYoutube, FaInstagram } from "react-icons/fa"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import Wrapper from "../wrapper"
+import { listRegions } from "@lib/data/regions"
+import { StoreRegion } from "@medusajs/types"
+import CountrySelectFooterNav from "@modules/layout/components/country-select-footer-nav"
+import FooterSocialIcons from "@modules/layout/components/footer-social-icons"
 
-const Footer = () => {
+export default async function Footer() {
+  const regions = await listRegions().then((regions: StoreRegion[]) => regions)
   return (
-    <footer className="bg-black text-white pt-14 pb-3">
+    <footer className="bg-black text-white pt-14 pb-32 lg:pb-3">
       <Wrapper className="flex justify-between flex-col md:flex-row gap-[50px] md:gap-0 md:flex-wrap">
         {/* LEFT START */}
         <div className="flex gap-[50px] md:gap-[75px] lg:gap-[100px] flex-col md:flex-row">
@@ -96,58 +99,17 @@ const Footer = () => {
         {/* LEFT END */}
 
         {/* RIGHT START */}
-        <div className="flex gap-4 justify-center md:justify-start">
-          <div
-            onClick={() =>
-              window.open(
-                "https://www.facebook.com/ruggyland?mibextid=ZbWKwL",
-                "_blank"
-              )
-            }
-            className="w-10 h-10 rounded-full bg-white/[0.25] flex items-center justify-center text-black hover:bg-white/[0.5] cursor-pointer"
-          >
-            <FaFacebookF size={20} />
-          </div>
-
-          <div
-            onClick={() =>
-              window.open("https://twitter.com/RuggyLand", "_blank")
-            }
-            className="w-10 h-10 rounded-full bg-white/[0.25] flex items-center justify-center text-black hover:bg-white/[0.5] cursor-pointer"
-          >
-            <FaTwitter size={20} />
-          </div>
-
-          <div
-            onClick={() =>
-              window.open(
-                "https://www.youtube.com/@ruggylandshorts8823",
-                "_blank"
-              )
-            }
-            className="w-10 h-10 rounded-full bg-white/[0.25] flex items-center justify-center text-black hover:bg-white/[0.5] cursor-pointer"
-          >
-            <FaYoutube size={20} />
-          </div>
-          <div
-            onClick={() =>
-              window.open("https://www.instagram.com/ruggyland/", "_blank")
-            }
-            className="w-10 h-10 rounded-full bg-white/[0.25] flex items-center justify-center text-black hover:bg-white/[0.5] cursor-pointer"
-          >
-            <FaInstagram size={20} />
-          </div>
-        </div>
+        <FooterSocialIcons />
         {/* RIGHT END */}
       </Wrapper>
-      <Wrapper className="flex justify-between mt-10 flex-col md:flex-row gap-[10px] md:gap-0">
+      <Wrapper className="flex justify-between items-center mt-10 flex-col md:flex-row gap-4 md:gap-0">
         {/* LEFT START */}
         <div className="text-[12px] text-white/[0.5] hover:text-white cursor-pointer text-center md:text-left">
           © {new Date().getFullYear()} RuggyLand, All Rights Reserved
         </div>
         {/* LEFT END */}
 
-        {/* RIGHT START */}
+        {/* CENTER - Policy Links */}
         <div className="flex gap-2 md:gap-5 text-center md:text-left flex-wrap justify-center">
           <LocalizedClientLink href="/terms-of-service">
             <div className="text-[12px] text-white/[0.5] hover:text-white cursor-pointer">
@@ -170,13 +132,12 @@ const Footer = () => {
             </div>
           </LocalizedClientLink>
         </div>
-        {/* <div className="min-w-[316px] flex xsmall:justify-end">
-          <CountrySelect />
-        </div> */}
-        {/* RIGHT END */}
+
+        {/* RIGHT - Country Selector */}
+        <div className="flex justify-center md:justify-end">
+          <CountrySelectFooterNav regions={regions} />
+        </div>
       </Wrapper>
     </footer>
   )
 }
-
-export default Footer
