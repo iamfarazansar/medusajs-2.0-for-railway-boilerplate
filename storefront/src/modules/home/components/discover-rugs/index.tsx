@@ -45,7 +45,7 @@ export default function DiscoverRugs({ categories }: Props) {
                 <LocalizedClientLink
                   key={c.id}
                   href={`/categories/${c.handle}`}
-                  className="group relative overflow-hidden rounded-2xl"
+                  className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300"
                 >
                   {/* Image */}
                   <div className="relative aspect-square w-full">

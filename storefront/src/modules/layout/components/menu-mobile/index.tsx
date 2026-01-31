@@ -1,8 +1,9 @@
 "use client"
 
-import React, { useMemo, useState } from "react"
+import React, { useMemo, useState, useRef, useEffect } from "react"
 import Link from "next/link"
-import { BsChevronDown } from "react-icons/bs"
+import Image from "next/image"
+import { BsChevronDown, BsChevronRight } from "react-icons/bs"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 type Category = {
@@ -11,9 +12,18 @@ type Category = {
   handle: string
   parent_category?: any
   category_children?: Category[]
+  metadata?: Record<string, unknown>
 }
 
 type NavItem = { id: number; name: string; url: string; target?: string }
+
+// Map category handles to their thumbnail images
+const categoryImages: Record<string, string> = {
+  "anime-rugs": "/discover/anime.jpg",
+  "modern-rugs": "/discover/modern-rugs.jpg",
+  "botanical-rugs": "/discover/botanical-rugs.png",
+  abstract: "/discover/abstract.png",
+}
 
 export default function MenuMobile({
   setMobileMenu,
@@ -23,101 +33,127 @@ export default function MenuMobile({
   categories: Category[]
 }) {
   const [showCatMenu, setShowCatMenu] = useState(false)
+  const menuRef = useRef<HTMLDivElement>(null)
+
+  // Close menu when tapping anywhere outside the menu card
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMobileMenu(false)
+      }
+    }
+
+    // Add listeners
+    document.addEventListener("mousedown", handleClickOutside)
+    document.addEventListener("touchstart", handleClickOutside)
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+      document.removeEventListener("touchstart", handleClickOutside)
+    }
+  }, [setMobileMenu])
 
   const topLevelCats = useMemo(
     () => (categories || []).filter((c) => !c.parent_category),
     [categories]
   )
 
+  // Match desktop nav: Home | All Rugs | Categories ▾ | Custom Rug | Contact
   const links: NavItem[] = [
     { id: 1, name: "Home", url: "/" },
-    { id: 2, name: "About", url: "/about-us" },
+    { id: 2, name: "All Rugs", url: "/store" },
+    { id: 3, name: "Custom Rug", url: "/custom-rug" },
     { id: 4, name: "Contact", url: "/contact-us" },
-    {
-      id: 5,
-      name: "Customize",
-      url: "https://docs.google.com/forms/d/e/1FAIpQLSfso28FwvN_7_X5uOWVF9okRYqCGhnEUP6TmaGEMB6X2woZtg/viewform?usp=sf_link",
-      target: "_blank",
-    },
   ]
 
   return (
     <ul
-      className="  fixed left-0 right-0
+      className="fixed left-0 right-0
     top-[50px] md:top-[80px]
     w-screen
     max-h-[calc(100vh-50px)] md:max-h-[calc(100vh-80px)]
     overflow-y-auto
-    bg-white
-    border-t
     text-black
     z-[9999]
     md:hidden
-    font-bold"
+    font-bold
+    pointer-events-none"
     >
-      {/* Normal links */}
-      {links.map((item) => (
-        <li key={item.id} onClick={() => setMobileMenu(false)}>
-          <Link target={item.target || ""} href={item.url}>
-            <div className="py-5 px-5 border-b cursor-pointer hover:bg-gray-200">
-              {item.name}
-            </div>
-          </Link>
-        </li>
-      ))}
-
-      {/* Categories accordion */}
-      <li
-        className="cursor-pointer py-5 px-5 border-b flex flex-col hover:bg-gray-200"
-        onClick={() => setShowCatMenu((v) => !v)}
-      >
-        <div className="flex justify-between items-center">
-          Categories
-          <BsChevronDown
-            size={14}
-            className={
-              showCatMenu
-                ? "rotate-180 transition-transform"
-                : "transition-transform"
-            }
-          />
-        </div>
-
-        {showCatMenu && (
-          <div
-            className="bg-black/[0.05] -mx-5 mt-4 -mb-5"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {topLevelCats.map((cat) => (
-              <div key={cat.id} className="border-t">
-                {/* Parent category */}
-                <LocalizedClientLink
-                  href={`/categories/${cat.handle}`}
-                  className="block py-4 px-8 hover:bg-gray-200"
-                  onClick={() => setMobileMenu(false)}
+      {/* Unified menu card */}
+      <li className="px-5 py-4 pointer-events-auto">
+        <div
+          ref={menuRef}
+          className="rounded-2xl bg-gray-50 shadow-[0_4px_20px_rgba(0,0,0,0.12)] overflow-hidden"
+        >
+          {/* Navigation links */}
+          {links.map((item, index) => (
+            <div key={item.id} onClick={() => setMobileMenu(false)}>
+              <Link target={item.target || ""} href={item.url}>
+                <div
+                  className={`py-4 px-5 cursor-pointer hover:bg-gray-100 bg-white ${
+                    index > 0 ? "border-t border-gray-200" : ""
+                  }`}
                 >
-                  {cat.name}
-                </LocalizedClientLink>
+                  {item.name}
+                </div>
+              </Link>
+            </div>
+          ))}
 
-                {/* Children */}
-                {cat.category_children?.length ? (
-                  <div className="pb-2">
-                    {cat.category_children.map((child) => (
-                      <LocalizedClientLink
-                        key={child.id}
-                        href={`/categories/${child.handle}`}
-                        className="block py-3 pl-12 pr-8 text-sm font-semibold hover:bg-gray-200"
-                        onClick={() => setMobileMenu(false)}
-                      >
-                        {child.name}
-                      </LocalizedClientLink>
-                    ))}
-                  </div>
-                ) : null}
-              </div>
-            ))}
+          {/* Categories accordion header */}
+          <div
+            className="flex justify-between items-center py-4 px-5 cursor-pointer border-t border-gray-200 bg-white hover:bg-gray-100"
+            onClick={() => setShowCatMenu((v) => !v)}
+          >
+            <span>Categories</span>
+            <BsChevronDown
+              size={14}
+              className={
+                showCatMenu
+                  ? "rotate-180 transition-transform duration-200"
+                  : "transition-transform duration-200"
+              }
+            />
           </div>
-        )}
+
+          {/* Category items */}
+          {showCatMenu && (
+            <div onClick={(e) => e.stopPropagation()}>
+              {topLevelCats.map((cat) => {
+                const imgSrc =
+                  (cat.metadata?.discover_image as string) ||
+                  categoryImages[cat.handle ?? ""] ||
+                  "/discover/default.jpg"
+
+                return (
+                  <LocalizedClientLink
+                    key={cat.id}
+                    href={`/categories/${cat.handle}`}
+                    className="flex items-center justify-between py-3 px-5 border-t border-gray-200 bg-white hover:bg-gray-100"
+                    onClick={() => setMobileMenu(false)}
+                  >
+                    <div className="flex items-center gap-3">
+                      {/* Category thumbnail */}
+                      <div className="w-12 h-12 rounded-lg overflow-hidden bg-gray-200 flex-shrink-0">
+                        <Image
+                          src={imgSrc}
+                          alt={cat.name}
+                          width={48}
+                          height={48}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <span className="text-base font-semibold">
+                        {cat.name}
+                      </span>
+                    </div>
+                    <BsChevronRight size={14} className="text-gray-400" />
+                  </LocalizedClientLink>
+                )
+              })}
+            </div>
+          )}
+        </div>
       </li>
     </ul>
   )
