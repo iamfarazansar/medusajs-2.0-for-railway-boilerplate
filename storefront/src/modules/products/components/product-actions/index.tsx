@@ -125,6 +125,9 @@ export default function ProductActions({
       countryCode,
     })
     setIsAdding(false)
+
+    // Show the nav bar so user can see cart count updated
+    window.dispatchEvent(new Event("show-nav"))
   }
 
   const qtyDisabled = !!disabled || isAdding || !selectedVariant

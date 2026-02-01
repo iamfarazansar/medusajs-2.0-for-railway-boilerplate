@@ -5,6 +5,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { BsChevronDown, BsChevronRight } from "react-icons/bs"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
+import { useSwipeable } from "react-swipeable"
 
 type Category = {
   id: string
@@ -38,6 +39,20 @@ export default function MenuMobile({
 }) {
   const [showCatMenu, setShowCatMenu] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
+
+  // Swipe handlers for the main menu
+  // Swipe up: if categories is open, close it first. If closed, close the menu.
+  const menuSwipeHandlers = useSwipeable({
+    onSwipedUp: () => {
+      if (showCatMenu) {
+        setShowCatMenu(false)
+      } else {
+        setMobileMenu(false)
+      }
+    },
+    preventScrollOnSwipe: true,
+    trackMouse: false,
+  })
 
   // Close menu when tapping anywhere outside the menu card (and not on toggle button)
   useEffect(() => {
@@ -81,6 +96,7 @@ export default function MenuMobile({
 
   return (
     <div
+      {...menuSwipeHandlers}
       className={`fixed left-0 right-0 top-[50px] md:top-[80px] w-screen z-[9999] md:hidden grid transition-all duration-300 ease-out ${
         isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
       }`}
@@ -108,7 +124,7 @@ export default function MenuMobile({
                 </div>
               ))}
 
-              {/* Categories accordion header */}
+              {/* Categories accordion header - opens on tap only */}
               <div
                 className="flex justify-between items-center py-4 px-5 cursor-pointer border-t border-gray-200 bg-white hover:bg-gray-100"
                 onClick={() => setShowCatMenu((v) => !v)}

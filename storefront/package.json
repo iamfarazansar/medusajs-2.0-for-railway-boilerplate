@@ -60,6 +60,7 @@
     "react-jwt": "^2.0.0",
     "react-razorpay": "^3.0.1",
     "react-responsive-carousel": "^3.2.23",
+    "react-swipeable": "^7.0.2",
     "server-only": "^0.0.1",
     "tailwindcss-radix": "^2.8.0",
     "webpack": "^5"
