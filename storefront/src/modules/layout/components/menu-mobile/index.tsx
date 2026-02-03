@@ -5,7 +5,6 @@ import Link from "next/link"
 import Image from "next/image"
 import { BsChevronDown, BsChevronRight } from "react-icons/bs"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
-import { useSwipeable } from "react-swipeable"
 
 type Category = {
   id: string
@@ -39,21 +38,6 @@ export default function MenuMobile({
 }) {
   const [showCatMenu, setShowCatMenu] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
-
-  // Swipe handlers for the main menu
-  // Swipe up: if categories is open, close it first. If closed, close the menu.
-  // Only enable when menu is open to avoid blocking touch events on other page elements
-  const menuSwipeHandlers = useSwipeable({
-    onSwipedUp: () => {
-      if (showCatMenu) {
-        setShowCatMenu(false)
-      } else {
-        setMobileMenu(false)
-      }
-    },
-    preventScrollOnSwipe: isOpen, // Only prevent scroll when menu is actually open
-    trackMouse: false,
-  })
 
   // Close menu when tapping anywhere outside the menu card (and not on toggle button)
   useEffect(() => {
@@ -97,7 +81,6 @@ export default function MenuMobile({
 
   return (
     <div
-      {...menuSwipeHandlers}
       className={`fixed left-0 right-0 top-[50px] md:top-[80px] w-screen z-[9999] md:hidden grid transition-all duration-300 ease-out ${
         isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
       }`}
