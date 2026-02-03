@@ -18,11 +18,8 @@ const ImageGallery = ({ images }: ImageGalleryProps) => {
         showIndicators={false}
         showStatus={false}
         thumbWidth={60}
-        className="productCarousel"
         swipeable={true}
         emulateTouch={true}
-        preventMovementUntilSwipeScrollTolerance={true}
-        swipeScrollTolerance={50}
       >
         {images.map((img) => (
           <img key={img.id} src={img.url} alt="Thumbnail" />
