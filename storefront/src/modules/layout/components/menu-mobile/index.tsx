@@ -42,6 +42,7 @@ export default function MenuMobile({
 
   // Swipe handlers for the main menu
   // Swipe up: if categories is open, close it first. If closed, close the menu.
+  // Only enable when menu is open to avoid blocking touch events on other page elements
   const menuSwipeHandlers = useSwipeable({
     onSwipedUp: () => {
       if (showCatMenu) {
@@ -50,7 +51,7 @@ export default function MenuMobile({
         setMobileMenu(false)
       }
     },
-    preventScrollOnSwipe: true,
+    preventScrollOnSwipe: isOpen, // Only prevent scroll when menu is actually open
     trackMouse: false,
   })
 
