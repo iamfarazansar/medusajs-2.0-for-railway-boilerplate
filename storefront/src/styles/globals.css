@@ -88,9 +88,36 @@ body {
   .productCarousel.carousel-root {
     flex-direction: column;
   }
+  /* Thumbnail wrapper - horizontal scroll container */
+  .productCarousel.carousel-root .carousel .thumbs-wrapper {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 8px 0;
+  }
+  .productCarousel.carousel-root .carousel .thumbs-wrapper::-webkit-scrollbar {
+    display: none;
+  }
+  /* Thumbnails row - flex container */
+  .productCarousel.carousel-root .carousel .thumbs {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 8px;
+    padding-right: 16px; /* Prevents last image from being cut off */
+    transform: none !important;
+    margin: 0;
+    padding-left: 0;
+  }
   .productCarousel.carousel-root .carousel .thumb {
+    flex-shrink: 0;
+    width: 60px !important;
+    height: 60px;
     border: 0;
     padding: 0;
+    margin: 0 !important;
   }
 }
 @media screen and (min-width: 768px) {
