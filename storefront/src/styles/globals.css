@@ -88,12 +88,29 @@ body {
   .productCarousel.carousel-root {
     flex-direction: column;
   }
+  .productCarousel.carousel-root .carousel .thumbs-wrapper {
+    overflow: visible;
+  }
   .productCarousel.carousel-root .carousel .thumbs {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto !important;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch; /* iOS momentum scrolling */
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
     padding-right: 20px; /* Prevents last thumbnail from being cut off */
+    padding-bottom: 10px; /* Space for scroll indicator if visible */
+    transform: none !important; /* Prevent library from overriding scroll position */
+    touch-action: pan-x !important; /* Force native horizontal scroll, prevent JS hijacking */
   }
   .productCarousel.carousel-root .carousel .thumb {
     border: 0;
     padding: 0;
+    flex-shrink: 0; /* Prevent thumbnails from shrinking */
+    scroll-snap-align: start;
+    touch-action: pan-x !important; /* Allow horizontal scroll on thumbs */
+    pointer-events: auto; /* Ensure clicks work */
   }
 }
 @media screen and (min-width: 768px) {
