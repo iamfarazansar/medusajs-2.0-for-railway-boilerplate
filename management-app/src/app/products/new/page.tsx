@@ -1050,7 +1050,7 @@ export default function CreateProductPage() {
                         <img
                           src={img.url}
                           alt="Preview"
-                          className={`w-full h-24 object-cover rounded-lg ${
+                          className={`w-full aspect-square object-cover rounded-lg ${
                             img.uploading ? "opacity-50" : ""
                           }`}
                         />
