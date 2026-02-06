@@ -59,7 +59,7 @@ const ImageGallery = ({ images }: ImageGalleryProps) => {
   }, [selectedIndex])
 
   return (
-    <div className="embla-product w-full max-w-[1360px] mx-auto sticky top-[50px]">
+    <div className="embla-product w-full mx-auto sticky top-[50px]">
       <div className="embla-product__wrapper">
         {/* Desktop thumbnails - vertical on left (hidden on mobile via CSS) */}
         <div className="embla-product__thumbs" ref={emblaThumbsRef}>

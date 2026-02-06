@@ -62,7 +62,7 @@ body {
   gap: 15px;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 1024px) {
   .embla-product__wrapper {
     flex-direction: row;
   }
@@ -89,6 +89,7 @@ body {
   position: relative;
   aspect-ratio: 1 / 1;
   width: 100%;
+  max-height: 600px;
   border-radius: 10px;
   overflow: hidden;
 }
@@ -105,7 +106,7 @@ body {
   overflow: hidden;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 1024px) {
   .embla-product__thumbs {
     display: block;
   }
@@ -164,9 +165,15 @@ body {
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
   padding-right: 20px;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
 }
 
-@media screen and (min-width: 768px) {
+.embla-product__thumbs-mobile::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+@media screen and (min-width: 1024px) {
   .embla-product__thumbs-mobile {
     display: none;
   }
