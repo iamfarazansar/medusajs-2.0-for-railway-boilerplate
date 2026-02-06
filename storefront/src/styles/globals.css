@@ -53,7 +53,7 @@ body {
 /* EMBLA PRODUCT CAROUSEL STYLING START */
 .embla-product {
   --thumb-size: 60px;
-  --thumb-height: 48px; /* 5:4 ratio for thumbnails */
+  --thumb-height: 60px; /* 1:1 ratio for thumbnails */
 }
 
 .embla-product__wrapper {
@@ -87,7 +87,7 @@ body {
 
 .embla-product__slide-wrapper {
   position: relative;
-  aspect-ratio: 5 / 4;
+  aspect-ratio: 1 / 1;
   width: 100%;
   border-radius: 10px;
   overflow: hidden;
