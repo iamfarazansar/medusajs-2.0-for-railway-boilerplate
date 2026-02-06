@@ -4,6 +4,7 @@ import SkeletonProductGrid from "@modules/skeletons/templates/skeleton-product-g
 import { SortOptions } from "@modules/store/components/refinement-list/sort-products"
 import PaginatedProducts from "./paginated-products"
 import RefinementList from "@modules/store/components/refinement-list"
+import MobileBackButton from "@modules/common/components/mobile-back-button"
 
 const StoreTemplate = ({
   sortBy,
@@ -23,6 +24,7 @@ const StoreTemplate = ({
       data-testid="category-container"
     >
       <div className="w-full">
+        <MobileBackButton />
         {/* Header */}
         <div className="mb-8">
           <h1
