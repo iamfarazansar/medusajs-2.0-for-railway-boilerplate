@@ -4,6 +4,9 @@ import { notFound } from "next/navigation"
 import { getRugStory, listRugStories } from "@lib/data/rug-stories"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
+// Force dynamic rendering to avoid build-time API calls
+export const dynamic = "force-dynamic"
+
 type Props = {
   params: Promise<{ slug: string; countryCode: string }>
 }
@@ -28,11 +31,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
+// Return empty array - pages will be generated on-demand
 export async function generateStaticParams() {
-  const { stories } = await listRugStories()
-  return stories.map((story) => ({
-    slug: story.slug,
-  }))
+  return []
 }
 
 export default async function RugStoryPage({ params }: Props) {
