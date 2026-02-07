@@ -1,6 +1,5 @@
 import { Metadata } from "next"
 import Image from "next/image"
-import Link from "next/link"
 import { listRugStories } from "@lib/data/rug-stories"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
@@ -16,8 +15,30 @@ export default async function CustomRugsPage() {
   return (
     <div className="bg-white min-h-screen">
       {/* Hero Section */}
-      <section className="relative py-16 sm:py-24">
-        <div className="mx-auto max-w-6xl px-4 text-center">
+      <section className="relative py-12 sm:py-24">
+        <div className="mx-auto max-w-6xl px-4">
+          {/* Back Button - visible on mobile */}
+          <LocalizedClientLink
+            href="/"
+            className="inline-flex items-center text-sm text-[#9b8b74] hover:text-[#866a36] mb-6 sm:mb-8"
+          >
+            <svg
+              className="mr-2 w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+            Back to Home
+          </LocalizedClientLink>
+
+          <div className="text-center">
           <h1
             className="text-[40px] sm:text-[56px] text-zinc-800"
             style={{ fontFamily: "'Dancing Script', cursive", fontWeight: 600 }}
@@ -30,6 +51,7 @@ export default async function CustomRugsPage() {
             final masterpiece, explore the journeys we&apos;ve been honored to
             craft.
           </p>
+          </div>
         </div>
       </section>
 
