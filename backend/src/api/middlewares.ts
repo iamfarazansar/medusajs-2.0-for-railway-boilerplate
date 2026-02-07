@@ -96,6 +96,42 @@ function uploadMw(req: MedusaRequest, res: MedusaResponse, next: NextFunction) {
 // ==============================
 // Medusa middlewares
 // ==============================
+
+// Multer config for rug story uploads (single file, 10MB)
+const storyUpload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    files: 1,
+    fileSize: 10 * 1024 * 1024, // 10MB per file
+  },
+  fileFilter: (req, file, cb) => {
+    const allowed = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+    if (!allowed.includes(file.mimetype)) {
+      return cb(new Error("Only JPG, PNG, WEBP, GIF images are allowed"));
+    }
+    cb(null, true);
+  },
+});
+
+function storyUploadMw(
+  req: MedusaRequest,
+  res: MedusaResponse,
+  next: NextFunction,
+) {
+  storyUpload.single("file")(req as any, res as any, (err: any) => {
+    if (!err) return next();
+
+    if (err instanceof multer.MulterError) {
+      if (err.code === "LIMIT_FILE_SIZE") {
+        return res.status(413).json({ message: "File must be <= 10MB" });
+      }
+      return res.status(400).json({ message: err.message });
+    }
+
+    return res.status(400).json({ message: err.message || "Upload failed" });
+  });
+}
+
 export default defineMiddlewares({
   routes: [
     {
@@ -142,13 +178,11 @@ export default defineMiddlewares({
       matcher: "/store/rug-stories/*",
       method: "GET",
     },
-    // Rug Stories - admin upload endpoint with large file support
+    // Rug Stories - admin upload endpoint with multipart/form-data
     {
       matcher: "/admin/rug-stories/upload",
       method: "POST",
-      bodyParser: {
-        sizeLimit: 50 * 1024 * 1024, // 50MB limit for base64 images
-      },
+      middlewares: [storyUploadMw],
     },
   ],
 });

@@ -29,21 +29,6 @@ type FormData = {
   published: boolean;
 };
 
-// Helper to convert file to base64
-const fileToBase64 = (file: File): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      const result = reader.result as string;
-      // Remove data URL prefix to get pure base64
-      const base64 = result.split(",")[1];
-      resolve(base64);
-    };
-    reader.onerror = reject;
-  });
-};
-
 export default function CreateRugStoryPage() {
   const queryClient = useQueryClient();
   const thumbnailInputRef = useRef<HTMLInputElement>(null);
@@ -96,29 +81,39 @@ export default function CreateRugStoryPage() {
     updateField("slug", slug);
   };
 
+  // Upload file using multipart/form-data (faster than base64)
   const uploadFile = async (
     file: File,
     imageType: "thumbnail" | "step",
     stepIndex?: number,
   ): Promise<string | null> => {
     try {
-      const base64 = await fileToBase64(file);
       const currentSlug =
         form.slug || form.title.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 
-      const response = (await sdk.client.fetch("/admin/rug-stories/upload", {
-        method: "POST",
-        body: {
-          file: base64,
-          filename: file.name,
-          mimeType: file.type,
-          storySlug: currentSlug,
-          imageType,
-          stepIndex,
-        },
-      })) as { file: { url: string } };
+      // Create FormData for multipart upload
+      const formData = new globalThis.FormData();
+      formData.append("file", file);
+      formData.append("storySlug", currentSlug);
+      formData.append("imageType", imageType);
+      if (stepIndex !== undefined) {
+        formData.append("stepIndex", String(stepIndex));
+      }
 
-      return response.file.url;
+      // Use native fetch for FormData (sdk.client doesn't handle FormData well)
+      const response = await fetch("/admin/rug-stories/upload", {
+        method: "POST",
+        body: formData,
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Upload failed");
+      }
+
+      const result = await response.json();
+      return result.file.url;
     } catch (error) {
       console.error("Upload failed:", error);
       alert("Failed to upload image");

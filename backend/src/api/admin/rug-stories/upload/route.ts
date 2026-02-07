@@ -1,61 +1,70 @@
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http";
 import { Modules } from "@medusajs/framework/utils";
 
-interface Base64UploadInput {
-  file: string; // base64 encoded file content
-  filename: string;
-  mimeType: string;
-  storySlug: string; // Slug of the story for folder organization
-  imageType: "thumbnail" | "step"; // Whether it's main thumbnail or step image
-  stepIndex?: number; // Optional step index for step images
-}
-
 /**
  * POST /admin/rug-stories/upload
- * Upload an image for a rug story to S3
+ * Upload an image for a rug story to S3 using multipart/form-data
  * Stores in stories/[slug]/ directory structure
+ *
+ * Form fields:
+ * - file: The image file (required)
+ * - storySlug: Slug of the story for folder organization (required)
+ * - imageType: "thumbnail" | "step" (required)
+ * - stepIndex: Optional step index for step images
  */
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
   try {
-    const input = req.body as Base64UploadInput;
+    // File is attached by multer middleware
+    const file = (req as any).file as
+      | { originalname: string; mimetype: string; buffer: Buffer; size: number }
+      | undefined;
 
-    if (!input.file || !input.filename) {
-      return res.status(400).json({ error: "File and filename are required" });
+    // Form fields are in req.body
+    const { storySlug, imageType, stepIndex } = req.body as {
+      storySlug?: string;
+      imageType?: string;
+      stepIndex?: string;
+    };
+
+    if (!file) {
+      return res.status(400).json({ error: "File is required" });
     }
 
-    if (!input.storySlug) {
+    if (!storySlug) {
       return res.status(400).json({ error: "storySlug is required" });
     }
 
-    // Decode base64 to buffer
-    const fileBuffer = Buffer.from(input.file, "base64");
+    if (!imageType || !["thumbnail", "step"].includes(imageType)) {
+      return res
+        .status(400)
+        .json({ error: "imageType must be 'thumbnail' or 'step'" });
+    }
 
     // Get the file module service
     const fileModuleService = req.scope.resolve(Modules.FILE) as any;
 
     // Sanitize the slug and filename
-    const sanitizedSlug = input.storySlug
+    const sanitizedSlug = storySlug
       .replace(/[^a-zA-Z0-9-]/g, "-")
       .toLowerCase();
     const timestamp = Date.now();
-    const sanitizedFilename = input.filename.replace(/[^a-zA-Z0-9.-]/g, "_");
+    const sanitizedFilename = file.originalname.replace(/[^a-zA-Z0-9.-]/g, "_");
 
     // Build storage path: stories/[slug]/[type]-[timestamp]-[filename]
     let storagePath: string;
-    if (input.imageType === "thumbnail") {
+    if (imageType === "thumbnail") {
       storagePath = `stories/${sanitizedSlug}/thumbnail-${timestamp}-${sanitizedFilename}`;
     } else {
-      const stepPrefix =
-        input.stepIndex !== undefined ? `step-${input.stepIndex}` : "step";
-      storagePath = `stories/${sanitizedSlug}/${stepPrefix}-${timestamp}-${sanitizedFilename}`;
+      const stepNum = stepIndex ? parseInt(stepIndex, 10) : 0;
+      storagePath = `stories/${sanitizedSlug}/step-${stepNum}-${timestamp}-${sanitizedFilename}`;
     }
 
     // Upload to S3 using Medusa's file service
     const uploadedFiles = await fileModuleService.createFiles([
       {
         filename: storagePath,
-        mimeType: input.mimeType || "image/jpeg",
-        content: fileBuffer,
+        mimeType: file.mimetype,
+        content: file.buffer,
         access: "public", // Publicly accessible
       },
     ]);
@@ -69,8 +78,8 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
         id: uploadedFiles[0].id,
         url: uploadedFiles[0].url,
         filename: sanitizedFilename,
-        mimeType: input.mimeType,
-        size: fileBuffer.length,
+        mimeType: file.mimetype,
+        size: file.size,
         path: storagePath,
       },
     });
