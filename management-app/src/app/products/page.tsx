@@ -152,10 +152,7 @@ export default function ProductsPage() {
                     key={product.id}
                     className="hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer"
                     onClick={() =>
-                      window.open(
-                        `${BACKEND_URL}/app/products/${product.id}`,
-                        "_blank",
-                      )
+                      router.push(`/products/${product.id}`)
                     }
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
