@@ -52,6 +52,14 @@ const ProductTabs = ({ product }: ProductTabsProps) => {
   )
 }
 
+const getCountryName = (code: string): string => {
+  try {
+    return new Intl.DisplayNames(["en"], { type: "region" }).of(code.toUpperCase()) || code
+  } catch {
+    return code
+  }
+}
+
 const ProductInfoTab = ({ product }: ProductTabsProps) => {
   return (
     <div className="text-small-regular py-8">
@@ -63,7 +71,7 @@ const ProductInfoTab = ({ product }: ProductTabsProps) => {
           </div>
           <div>
             <span className="font-semibold">Country of origin</span>
-            <p>{product.origin_country ? product.origin_country : "-"}</p>
+            <p>{product.origin_country ? getCountryName(product.origin_country) : "-"}</p>
           </div>
           <div>
             <span className="font-semibold">Type</span>

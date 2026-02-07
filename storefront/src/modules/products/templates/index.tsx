@@ -171,7 +171,9 @@ const ProductTemplate: React.FC<ProductTemplateProps> = ({
                       Country of origin
                     </span>
                     <span className="text-ui-fg-subtle text-right">
-                      {product.origin_country || "-"}
+                      {product.origin_country
+                        ? new Intl.DisplayNames(["en"], { type: "region" }).of(product.origin_country.toUpperCase()) || product.origin_country
+                        : "-"}
                     </span>
                   </div>
                   <div className="h-px w-full bg-ui-border-base" />
