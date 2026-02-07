@@ -20,7 +20,7 @@ export const RugStory = model.define("rug_story", {
 
   // Crafting steps stored as JSON array
   // Each step: { title: string, description: string, image_url: string }
-  steps: model.json().default([]),
+  steps: model.json().nullable(),
 
   // Publishing
   published: model.boolean().default(false),

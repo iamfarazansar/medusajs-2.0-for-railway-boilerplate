@@ -137,12 +137,10 @@ export default defineMiddlewares({
     {
       matcher: "/store/rug-stories",
       method: "GET",
-      additionalDataValidator: false,
     },
     {
       matcher: "/store/rug-stories/*",
       method: "GET",
-      additionalDataValidator: false,
     },
     // Rug Stories - admin upload endpoint with large file support
     {
