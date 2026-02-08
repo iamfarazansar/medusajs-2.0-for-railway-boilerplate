@@ -97,20 +97,21 @@ const MobileActions: React.FC<MobileActionsProps> = ({
               <span>—</span>
 
               {selectedPrice ? (
-                <div className="flex items-end gap-x-2 text-ui-fg-base">
-                  {selectedPrice.price_type === "sale" && (
-                    <span className="line-through text-small-regular">
-                      {selectedPrice.original_price}
-                    </span>
-                  )}
-                  <span
-                    className={clx({
-                      "text-ui-fg-interactive":
-                        selectedPrice.price_type === "sale",
-                    })}
-                  >
+                <div className="flex items-baseline gap-x-2">
+                  <span className="font-bold text-ui-fg-base">
                     {selectedPrice.calculated_price}
                   </span>
+                  {selectedPrice.price_type === "sale" && (
+                    <>
+                      <span className="line-through text-xs text-ui-fg-muted">
+                        {selectedPrice.currency_code === "inr" ? "M.R.P.:" : "was"}{" "}
+                        {selectedPrice.original_price}
+                      </span>
+                      <span className="text-xs font-bold text-ui-fg-base bg-ui-bg-base-pressed px-1.5 py-0.5 rounded">
+                        {selectedPrice.percentage_diff}% OFF
+                      </span>
+                    </>
+                  )}
                 </div>
               ) : null}
             </div>
