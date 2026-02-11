@@ -36,7 +36,10 @@ export default async function Nav() {
         </div>
 
         {/* CENTER NAV */}
-        <div className="hidden tablet:flex items-center gap-4 small:gap-5 medium:gap-6 large:gap-8 font-medium text-black text-sm small:text-base">
+        <div
+          data-nav-center
+          className="hidden tablet:flex items-center gap-4 small:gap-5 medium:gap-6 large:gap-8 font-medium text-black text-sm small:text-base"
+        >
           {/* Home */}
           <LocalizedClientLink
             href={NAV_LINKS[0].href}
