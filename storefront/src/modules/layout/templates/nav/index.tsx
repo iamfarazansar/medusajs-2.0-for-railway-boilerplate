@@ -5,6 +5,7 @@ import CartButton from "@modules/layout/components/cart-button"
 import Link from "next/link"
 import NavShell from "../nav-shell"
 import { BsPerson } from "react-icons/bs"
+import SearchBar from "@modules/layout/components/search-bar"
 import { listCategories } from "@lib/data/categories"
 import CategoriesDropdown from "@modules/layout/components/categories-dropdown"
 import NavMobile from "../nav-mobile"
@@ -72,8 +73,10 @@ export default async function Nav() {
           </LocalizedClientLink>
         </div>
 
-        {/* RIGHT: Account + Cart + Mobile */}
+        {/* RIGHT: Search + Account + Cart + Mobile */}
         <div className="flex items-center gap-2 md:gap-4">
+          <SearchBar />
+
           <div className="small:flex items-center">
             <LocalizedClientLink
               className="w-8 md:w-12 h-8 md:h-12 rounded-full flex justify-center items-center hover:bg-black/[0.05] cursor-pointer transition"
